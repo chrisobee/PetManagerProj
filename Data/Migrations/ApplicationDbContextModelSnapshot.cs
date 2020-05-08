@@ -15,7 +15,7 @@ namespace PetManager.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.1")
+                .HasAnnotation("ProductVersion", "3.1.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -48,8 +48,8 @@ namespace PetManager.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c3681852-1fe4-42fe-b640-d8778e0862d1",
-                            ConcurrencyStamp = "0cf3359c-05c0-4a16-b178-a33cfe2d04a5",
+                            Id = "bb4b1c28-e028-44d8-bf0c-d4e28c832e4a",
+                            ConcurrencyStamp = "736abc33-2c73-4371-81c7-e02f72caea2a",
                             Name = "Pet Owner",
                             NormalizedName = "PET OWNER"
                         });
@@ -224,6 +224,161 @@ namespace PetManager.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("PetManager.Models.AnimalType", b =>
+                {
+                    b.Property<int>("AnimalTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AnimalTypeId");
+
+                    b.ToTable("AnimalTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            AnimalTypeId = 1,
+                            Name = "Dog"
+                        },
+                        new
+                        {
+                            AnimalTypeId = 2,
+                            Name = "Cat"
+                        },
+                        new
+                        {
+                            AnimalTypeId = 3,
+                            Name = "Small Mammal"
+                        },
+                        new
+                        {
+                            AnimalTypeId = 4,
+                            Name = "Fish"
+                        },
+                        new
+                        {
+                            AnimalTypeId = 5,
+                            Name = "Bird"
+                        },
+                        new
+                        {
+                            AnimalTypeId = 6,
+                            Name = "Equine"
+                        });
+                });
+
+            modelBuilder.Entity("PetManager.Models.Pet", b =>
+                {
+                    b.Property<int>("PetId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Age")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AnimalTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PetId");
+
+                    b.HasIndex("AnimalTypeId");
+
+                    b.ToTable("Pets");
+                });
+
+            modelBuilder.Entity("PetManager.Models.PetHumanJxn", b =>
+                {
+                    b.Property<int>("PetHumanJxnId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("PetId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PetOwnerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PetHumanJxnId");
+
+                    b.HasIndex("PetId");
+
+                    b.HasIndex("PetOwnerId");
+
+                    b.ToTable("PetOwnerships");
+                });
+
+            modelBuilder.Entity("PetManager.Models.PetOwner", b =>
+                {
+                    b.Property<int>("PetOwnerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IdentityUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Lat")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Lng")
+                        .HasColumnType("float");
+
+                    b.Property<int?>("PetOwnerId1")
+                        .HasColumnType("int");
+
+                    b.HasKey("PetOwnerId");
+
+                    b.HasIndex("IdentityUserId");
+
+                    b.HasIndex("PetOwnerId1");
+
+                    b.ToTable("PetOwners");
+                });
+
+            modelBuilder.Entity("PetManager.Models.ToDoTask", b =>
+                {
+                    b.Property<int>("TaskId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("PetId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SpecialInstructions")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TakeCompleted")
+                        .HasColumnType("bit");
+
+                    b.Property<TimeSpan>("TaskInterval")
+                        .HasColumnType("time");
+
+                    b.Property<string>("TaskName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("TaskId");
+
+                    b.HasIndex("PetId");
+
+                    b.ToTable("Tasks");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -271,6 +426,50 @@ namespace PetManager.Data.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PetManager.Models.Pet", b =>
+                {
+                    b.HasOne("PetManager.Models.AnimalType", "AnimalType")
+                        .WithMany()
+                        .HasForeignKey("AnimalTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PetManager.Models.PetHumanJxn", b =>
+                {
+                    b.HasOne("PetManager.Models.Pet", "Pet")
+                        .WithMany()
+                        .HasForeignKey("PetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PetManager.Models.PetOwner", "PetOwner")
+                        .WithMany()
+                        .HasForeignKey("PetOwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PetManager.Models.PetOwner", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
+                        .WithMany()
+                        .HasForeignKey("IdentityUserId");
+
+                    b.HasOne("PetManager.Models.PetOwner", null)
+                        .WithMany("Contacts")
+                        .HasForeignKey("PetOwnerId1");
+                });
+
+            modelBuilder.Entity("PetManager.Models.ToDoTask", b =>
+                {
+                    b.HasOne("PetManager.Models.Pet", "Pet")
+                        .WithMany()
+                        .HasForeignKey("PetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
