@@ -27,13 +27,13 @@ namespace PetManager.Data
 
             builder.Entity<AnimalType>()
                 .HasData(
-                    new AnimalType { Name = "Dog" },
-                    new AnimalType { Name = "Cat" },
-                    new AnimalType { Name = "Small Mammal" },
-                    new AnimalType { Name = "Fish" },
-                    new AnimalType { Name = "Bird" },
-                    new AnimalType { Name = "Equine" }
-                    );
+                    new AnimalType { AnimalTypeId = 1, Name = "Dog" },
+                    new AnimalType { AnimalTypeId = 2, Name = "Cat" },
+                    new AnimalType { AnimalTypeId = 3, Name = "Small Mammal" },
+                    new AnimalType { AnimalTypeId = 4, Name = "Fish" },
+                    new AnimalType { AnimalTypeId = 5, Name = "Bird" },
+                    new AnimalType { AnimalTypeId = 6, Name = "Equine" }
+                    ); ;
 
             builder.Entity<IdentityRole>()
                 .HasData(
