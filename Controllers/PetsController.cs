@@ -22,7 +22,7 @@ namespace PetManager.Controllers
         // GET: Pets
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Pet.Include(p => p.AnimalType);
+            var applicationDbContext = _context.Pets.Include(p => p.AnimalType);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -34,7 +34,7 @@ namespace PetManager.Controllers
                 return NotFound();
             }
 
-            var pet = await _context.Pet
+            var pet = await _context.Pets
                 .Include(p => p.AnimalType)
                 .FirstOrDefaultAsync(m => m.PetId == id);
             if (pet == null)
@@ -77,7 +77,7 @@ namespace PetManager.Controllers
                 return NotFound();
             }
 
-            var pet = await _context.Pet.FindAsync(id);
+            var pet = await _context.Pets.FindAsync(id);
             if (pet == null)
             {
                 return NotFound();
@@ -130,7 +130,7 @@ namespace PetManager.Controllers
                 return NotFound();
             }
 
-            var pet = await _context.Pet
+            var pet = await _context.Pets
                 .Include(p => p.AnimalType)
                 .FirstOrDefaultAsync(m => m.PetId == id);
             if (pet == null)
@@ -146,15 +146,15 @@ namespace PetManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var pet = await _context.Pet.FindAsync(id);
-            _context.Pet.Remove(pet);
+            var pet = await _context.Pets.FindAsync(id);
+            _context.Pets.Remove(pet);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool PetExists(int id)
         {
-            return _context.Pet.Any(e => e.PetId == id);
+            return _context.Pets.Any(e => e.PetId == id);
         }
     }
 }

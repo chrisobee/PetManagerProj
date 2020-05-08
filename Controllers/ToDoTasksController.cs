@@ -22,7 +22,7 @@ namespace PetManager.Controllers
         // GET: ToDoTasks
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.ToDoTask.Include(t => t.Pet);
+            var applicationDbContext = _context.Tasks.Include(t => t.Pet);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -34,7 +34,7 @@ namespace PetManager.Controllers
                 return NotFound();
             }
 
-            var toDoTask = await _context.ToDoTask
+            var toDoTask = await _context.Tasks
                 .Include(t => t.Pet)
                 .FirstOrDefaultAsync(m => m.TaskId == id);
             if (toDoTask == null)
@@ -48,7 +48,7 @@ namespace PetManager.Controllers
         // GET: ToDoTasks/Create
         public IActionResult Create()
         {
-            ViewData["PetId"] = new SelectList(_context.Pet, "PetId", "PetId");
+            ViewData["PetId"] = new SelectList(_context.Pets, "PetId", "PetId");
             return View();
         }
 
@@ -65,7 +65,7 @@ namespace PetManager.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PetId"] = new SelectList(_context.Pet, "PetId", "PetId", toDoTask.PetId);
+            ViewData["PetId"] = new SelectList(_context.Pets, "PetId", "PetId", toDoTask.PetId);
             return View(toDoTask);
         }
 
@@ -77,12 +77,12 @@ namespace PetManager.Controllers
                 return NotFound();
             }
 
-            var toDoTask = await _context.ToDoTask.FindAsync(id);
+            var toDoTask = await _context.Tasks.FindAsync(id);
             if (toDoTask == null)
             {
                 return NotFound();
             }
-            ViewData["PetId"] = new SelectList(_context.Pet, "PetId", "PetId", toDoTask.PetId);
+            ViewData["PetId"] = new SelectList(_context.Pets, "PetId", "PetId", toDoTask.PetId);
             return View(toDoTask);
         }
 
@@ -118,7 +118,7 @@ namespace PetManager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PetId"] = new SelectList(_context.Pet, "PetId", "PetId", toDoTask.PetId);
+            ViewData["PetId"] = new SelectList(_context.Pets, "PetId", "PetId", toDoTask.PetId);
             return View(toDoTask);
         }
 
@@ -130,7 +130,7 @@ namespace PetManager.Controllers
                 return NotFound();
             }
 
-            var toDoTask = await _context.ToDoTask
+            var toDoTask = await _context.Tasks
                 .Include(t => t.Pet)
                 .FirstOrDefaultAsync(m => m.TaskId == id);
             if (toDoTask == null)
@@ -146,15 +146,15 @@ namespace PetManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var toDoTask = await _context.ToDoTask.FindAsync(id);
-            _context.ToDoTask.Remove(toDoTask);
+            var toDoTask = await _context.Tasks.FindAsync(id);
+            _context.Tasks.Remove(toDoTask);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ToDoTaskExists(int id)
         {
-            return _context.ToDoTask.Any(e => e.TaskId == id);
+            return _context.Tasks.Any(e => e.TaskId == id);
         }
     }
 }
