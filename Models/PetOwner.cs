@@ -12,12 +12,16 @@ namespace PetManager.Models
     {
         [Key]
         public int PetOwnerId { get; set; }
-        public string Name { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public double Lat { get; set; }
         public double Lng { get; set; }
+        public PetOwner[] Contacts { get; set; } 
 
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }
         public IdentityUser IdentityUser { get; set; }
+        
+        
     }
 }
