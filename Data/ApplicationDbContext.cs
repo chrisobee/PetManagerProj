@@ -30,5 +30,9 @@ namespace PetManager.Data
                     }
             );
         }
+
+        public DbSet<PetManager.Models.Pet> Pet { get; set; }
+
+        public DbSet<PetManager.Models.ToDoTask> ToDoTask { get; set; }
     }
 }
