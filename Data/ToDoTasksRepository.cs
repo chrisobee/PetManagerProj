@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace PetManager.Data
 {
-    public class PetRepository : RepositoryBase<Pet>, IPetRepository
+    public class ToDoTasksRepository : RepositoryBase<ToDoTask>, IToDoTasksRepository
     {
-        public PetRepository(ApplicationDbContext applicationDbContext) :base(applicationDbContext)
+        public ToDoTasksRepository(ApplicationDbContext applicationDbContext) : base(applicationDbContext)
         {
         }
     }

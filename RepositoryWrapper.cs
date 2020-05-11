@@ -11,6 +11,18 @@ namespace PetManager
     {
         private ApplicationDbContext _context;
         private IPetOwnerRepository _petOwner;
+        private IPetRepository _pet;
+        public IPetRepository Pet
+        {
+            get
+            {
+                if(_pet == null)
+                {
+                    _pet = new PetRepository(_context);
+                }
+                return _pet;
+            }
+        }
         public IPetOwnerRepository PetOwner
         {
             get

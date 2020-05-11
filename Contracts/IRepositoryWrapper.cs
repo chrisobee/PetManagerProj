@@ -8,6 +8,8 @@ namespace PetManager.Contracts
     public interface IRepositoryWrapper
     {
         IPetOwnerRepository PetOwner { get; }
+        IPetRepository Pet { get; }
+        IToDoTasksRepository ToDoTask { get; }
         void Save();
     }
 }
