@@ -12,5 +12,7 @@ namespace PetManager.Data
         public PetRepository(ApplicationDbContext applicationDbContext) :base(applicationDbContext)
         {
         }
+
+        public void CreatePet(Pet pet) => Create(pet);
     }
 }

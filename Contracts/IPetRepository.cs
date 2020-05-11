@@ -8,5 +8,6 @@ namespace PetManager.Contracts
 {
     public interface IPetRepository : IRepositoryBase<Pet>
     {
+        void CreatePet(Pet pet);
     }
 }

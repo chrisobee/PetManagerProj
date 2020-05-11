@@ -49,8 +49,8 @@ namespace PetManager.Controllers
         // GET: Pets/Create
         public IActionResult Create()
         {
-            ViewData["AnimalTypeId"] = new SelectList(_context.Set<AnimalType>(), "AnimalTypeId", "AnimalTypeId");
-            return View();
+            var pet = new Pet();
+            return View(pet);
         }
 
         // POST: Pets/Create
@@ -58,15 +58,15 @@ namespace PetManager.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PetId,Name,Age,AnimalTypeId")] Pet pet)
+        public async Task<IActionResult> Create(Pet pet)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(pet);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                _repo.Pet.CreatePet(pet);
+                _repo.Save();
+                return RedirectToAction("index");
             }
-            ViewData["AnimalTypeId"] = new SelectList(_context.Set<AnimalType>(), "AnimalTypeId", "AnimalTypeId", pet.AnimalTypeId);
+            
             return View(pet);
         }
 
@@ -78,7 +78,7 @@ namespace PetManager.Controllers
                 return NotFound();
             }
 
-            var pet = await _context.Pets.FindAsync(id);
+            var pet = await _repo.Pet.FindAsync(id);
             if (pet == null)
             {
                 return NotFound();
