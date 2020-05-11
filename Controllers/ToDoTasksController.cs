@@ -19,18 +19,17 @@ namespace PetManager.Controllers
         {
             _repo = repo;
         }
-
-        // GET: ToDoTasks/Details/5
-        public async Task<IActionResult> Details()
+        
+        //GET: ToDoTasks/Details
+        public IActionResult Details(int taskId)
         {
-
-            return View(toDoTask);
+            var task = _repo.ToDoTask.FindTask(taskId);
+            return View(task);
         }
 
         // GET: ToDoTasks/Create
         public IActionResult Create()
         {
-            ViewData["PetId"] = new SelectList(_context.Pets, "PetId", "PetId");
             return View();
         }
 
@@ -39,15 +38,14 @@ namespace PetManager.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TaskId,TaskName,TakeCompleted,TaskInterval,SpecialInstructions,PetId")] ToDoTask toDoTask)
+        public async Task<IActionResult> Create(ToDoTask toDoTask)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(toDoTask);
-                await _context.SaveChangesAsync();
+                _repo.ToDoTask.CreateTask(toDoTask);
+                await _repo.Save();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PetId"] = new SelectList(_context.Pets, "PetId", "PetId", toDoTask.PetId);
             return View(toDoTask);
         }
 
@@ -73,7 +71,7 @@ namespace PetManager.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TaskId,TaskName,TakeCompleted,TaskInterval,SpecialInstructions,PetId")] ToDoTask toDoTask)
+        public async Task<IActionResult> Edit(int id, ToDoTask toDoTask)
         {
             if (id != toDoTask.TaskId)
             {

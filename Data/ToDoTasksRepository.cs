@@ -21,6 +21,6 @@ namespace PetManager.Data
 
         public ToDoTask FindTask(int taskId) => FindByCondition(t => t.TaskId == taskId).SingleOrDefault();
 
-        public IEnumerable<ToDoTask> GetTasks(int petId) => FindAll().Where(t => t.PetId == petId);
+        public IEnumerable<ToDoTask> GetTasks(List<int> petIds) => FindAll().Where(t => petIds.Contains(t.PetId));
     }
 }
