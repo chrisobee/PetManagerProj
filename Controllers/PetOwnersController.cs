@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using PetManager.Contracts;
 using PetManager.Data;
 using PetManager.Models;
+using PetManager.ViewModels;
 
 namespace PetManager.Controllers
 {
@@ -24,9 +25,11 @@ namespace PetManager.Controllers
         // GET: PetOwners
         public async Task<IActionResult> Index()
         {
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var petOwner = _repo.PetOwner.
-            return View(await applicationDbContext.ToListAsync());
+            TasksAndPetsVM tasksAndPets = new TasksAndPetsVM();
+            string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            tasksAndPets.PetOwner = await _repo.PetOwner.FindOwner(userId);
+            tasksAndPets.CurrentUsersPets = 
+            return View(petOwner);
         }
 
         // GET: PetOwners/Details/5
