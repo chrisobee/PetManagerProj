@@ -350,5 +350,6 @@ MigrationBackup/
 .ionide/
 
 # Avoiding Sharing Migrations
-Data/Migrations
+/Data/Migrations
+
 
