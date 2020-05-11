@@ -8,7 +8,7 @@ namespace PetManager.Contracts
 {
     public interface IToDoTasksRepository : IRepositoryBase<ToDoTask>
     {
-        Task<IEnumerable<ToDoTask>> GetTasks(int petId);
+        Task<IEnumerable<ToDoTask>> GetTasksByPets(List<int> petIds);
         Task<ToDoTask> FindTask(int? taskId);
         void CreateTask(ToDoTask task);
         void EditTask(ToDoTask task);

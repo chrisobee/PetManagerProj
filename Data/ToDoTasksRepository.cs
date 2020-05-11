@@ -26,7 +26,7 @@ namespace PetManager.Data
             return singleTask;
         }
 
-        public async Task<IEnumerable<ToDoTask>> GetTasksByPets(List<int> petIds)
+        public async Task<IEnumerable<ToDoTask>> GetTasksByPets(int? petId)
         {
             var tasks = await FindByCondition(t => petIds.Contains(t.PetId));
             return tasks;

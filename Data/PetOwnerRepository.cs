@@ -13,21 +13,15 @@ namespace PetManager.Data
         {
         }
 
-        public void CreatePetOwner() => Create()
+        public void CreatePetOwner(PetOwner petOwner) => Create(petOwner);
+        public void DeletePetOwner(PetOwner petOwner) => Delete(petOwner);
 
-        public void DeletePetOwner()
+        public void EditPetOwner(PetOwner petOwner) => Update(petOwner);
+        public async Task<PetOwner> FindOwner(string userId)
         {
-            throw new NotImplementedException();
-        }
-
-        public void EditPetOwner()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<PetOwner> FindOwner(string userId)
-        {
-            throw new NotImplementedException();
+            var results = await FindByCondition(p => p.IdentityUserId == userId);
+            var currentUser = results.SingleOrDefault();
+            return currentUser;
         }
     }
 }
