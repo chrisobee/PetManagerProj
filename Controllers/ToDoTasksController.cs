@@ -21,16 +21,17 @@ namespace PetManager.Controllers
         }
         
         //GET: ToDoTasks/Details
-        public IActionResult Details(int taskId)
+        public async Task<IActionResult> Details(int taskId)
         {
-            var task = _repo.ToDoTask.FindTask(taskId);
+            var task = await _repo.ToDoTask.FindTask(taskId);
             return View(task);
         }
 
         // GET: ToDoTasks/Create
         public IActionResult Create()
         {
-            return View();
+            var task = new ToDoTask();
+            return View(task);
         }
 
         // POST: ToDoTasks/Create
@@ -57,12 +58,11 @@ namespace PetManager.Controllers
                 return NotFound();
             }
 
-            var toDoTask = await _context.Tasks.FindAsync(id);
+            var toDoTask = await _repo.ToDoTask.FindTask(id);
             if (toDoTask == null)
             {
                 return NotFound();
             }
-            ViewData["PetId"] = new SelectList(_context.Pets, "PetId", "PetId", toDoTask.PetId);
             return View(toDoTask);
         }
 
@@ -82,8 +82,8 @@ namespace PetManager.Controllers
             {
                 try
                 {
-                    _context.Update(toDoTask);
-                    await _context.SaveChangesAsync();
+                    _repo.ToDoTask.Update(toDoTask);
+                    await _repo.Save();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -98,7 +98,6 @@ namespace PetManager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PetId"] = new SelectList(_context.Pets, "PetId", "PetId", toDoTask.PetId);
             return View(toDoTask);
         }
 
@@ -110,9 +109,7 @@ namespace PetManager.Controllers
                 return NotFound();
             }
 
-            var toDoTask = await _context.Tasks
-                .Include(t => t.Pet)
-                .FirstOrDefaultAsync(m => m.TaskId == id);
+            var toDoTask = await _repo.ToDoTask.FindTask(id);
             if (toDoTask == null)
             {
                 return NotFound();

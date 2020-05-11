@@ -19,8 +19,18 @@ namespace PetManager.Data
 
         public void EditTask(ToDoTask task) => Update(task);
 
-        public ToDoTask FindTask(int taskId) => FindByCondition(t => t.TaskId == taskId).SingleOrDefault();
+        public async Task<ToDoTask> FindTask(int? taskId) 
+        {
+            var tasks = await FindByCondition(t => t.TaskId == taskId);
+            var singleTask = tasks.SingleOrDefault();
+            return singleTask;
+        }
 
-        public IEnumerable<ToDoTask> GetTasks(List<int> petIds) => FindAll().Where(t => petIds.Contains(t.PetId));
+        public async Task<IEnumerable<ToDoTask>> GetTasksByPets(List<int> petIds)
+        {
+            var tasks = await FindByCondition(t => petIds.Contains(t.PetId));
+            return tasks;
+        }
+        //public IEnumerable<ToDoTask> GetTasks(List<int> petIds) => FindAll().Where(t => petIds.Contains(t.PetId));
     }
 }

@@ -8,8 +8,8 @@ namespace PetManager.Contracts
 {
     public interface IToDoTasksRepository : IRepositoryBase<ToDoTask>
     {
-        IEnumerable<ToDoTask> GetTasks(int petId);
-        ToDoTask FindTask(int taskId);
+        Task<IEnumerable<ToDoTask>> GetTasks(int petId);
+        Task<ToDoTask> FindTask(int? taskId);
         void CreateTask(ToDoTask task);
         void EditTask(ToDoTask task);
         void DeleteTask(ToDoTask task);

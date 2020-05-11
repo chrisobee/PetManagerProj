@@ -16,12 +16,12 @@ namespace PetManager
         {
             ApplicationDbContext = applicationDbContext;
         }
-        public IQueryable<T> FindAll()
+        public async Task<IQueryable<T>> FindAll()
         {
             return ApplicationDbContext.Set<T>().AsNoTracking();
         }
 
-        public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression)
+        public async Task<IQueryable<T>> FindByCondition(Expression<Func<T, bool>> expression)
         {
             return ApplicationDbContext.Set<T>().Where(expression).AsNoTracking();
         }
