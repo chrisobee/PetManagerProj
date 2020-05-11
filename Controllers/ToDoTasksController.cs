@@ -123,15 +123,23 @@ namespace PetManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var toDoTask = await _context.Tasks.FindAsync(id);
-            _context.Tasks.Remove(toDoTask);
-            await _context.SaveChangesAsync();
+            var toDoTask = await _repo.ToDoTask.FindTask(id);
+            _repo.ToDoTask.DeleteTask(toDoTask);
+            await _repo.Save();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ToDoTaskExists(int id)
         {
-            return _context.Tasks.Any(e => e.TaskId == id);
+            try
+            {
+                _repo.ToDoTask.FindTask(id);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
