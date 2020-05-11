@@ -20,28 +20,9 @@ namespace PetManager.Controllers
             _repo = repo;
         }
 
-        // GET: ToDoTasks
-        public async Task<IActionResult> Index()
-        {
-            var applicationDbContext = _context.Tasks.Include(t => t.Pet);
-            return View(await applicationDbContext.ToListAsync());
-        }
-
         // GET: ToDoTasks/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details()
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var toDoTask = await _context.Tasks
-                .Include(t => t.Pet)
-                .FirstOrDefaultAsync(m => m.TaskId == id);
-            if (toDoTask == null)
-            {
-                return NotFound();
-            }
 
             return View(toDoTask);
         }
