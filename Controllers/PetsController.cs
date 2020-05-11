@@ -20,13 +20,7 @@ namespace PetManager.Controllers
             _repo = repo;
         }
 
-        // GET: Pets
-        public async Task<IActionResult> Index()
-        {
-            var applicationDbContext = _context.Pets.Include(p => p.AnimalType);
-            return View(await applicationDbContext.ToListAsync());
-        }
-
+       
         // GET: Pets/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -35,9 +29,8 @@ namespace PetManager.Controllers
                 return NotFound();
             }
 
-            var pet = await _context.Pets
-                .Include(p => p.AnimalType)
-                .FirstOrDefaultAsync(m => m.PetId == id);
+            var pet = await _repo.Pet.GetPet(id);
+            
             if (pet == null)
             {
                 return NotFound();
@@ -71,14 +64,14 @@ namespace PetManager.Controllers
         }
 
         // GET: Pets/Edit/5
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var pet = _repo.Pet.GetPet(id);
+            var pet = await _repo.Pet.GetPet(id);
             if (pet == null)
             {
                 return NotFound();
@@ -124,14 +117,14 @@ namespace PetManager.Controllers
         }
 
         // GET: Pets/Delete/5
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var pet = _repo.Pet.GetPet(id);
+            var pet = await _repo.Pet.GetPet(id);
             if (pet == null)
             {
                 return NotFound();
@@ -145,7 +138,7 @@ namespace PetManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var pet = _repo.Pet.GetPet(id);
+            var pet = await _repo.Pet.GetPet(id);
             _repo.Pet.DeletePet(pet);
             await _repo.Save();
             return RedirectToAction("index");
@@ -153,10 +146,16 @@ namespace PetManager.Controllers
 
         private bool PetExists(int id)
         {
-            try 
-            
-            _repo.Pet.GetPet(id);
-            return 
+            try
+            {
+                _repo.Pet.GetPet(id);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+
         }
     }
 }
