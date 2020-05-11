@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using PetManager.Contracts;
 using PetManager.Data;
 using PetManager.Models;
 
@@ -12,11 +13,11 @@ namespace PetManager.Controllers
 {
     public class PetsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IRepositoryWrapper _repo;
 
-        public PetsController(ApplicationDbContext context)
+        public PetsController(IRepositoryWrapper repo)
         {
-            _context = context;
+            _repo = repo;
         }
 
         // GET: Pets

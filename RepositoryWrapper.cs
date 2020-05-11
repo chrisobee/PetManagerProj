@@ -12,6 +12,7 @@ namespace PetManager
         private ApplicationDbContext _context;
         private IPetOwnerRepository _petOwner;
         private IPetRepository _pet;
+        private IToDoTasksRepository _toDoTask;
         public IPetRepository Pet
         {
             get
@@ -32,6 +33,17 @@ namespace PetManager
                     _petOwner = new PetOwnerRepository(_context);
                 }
                 return _petOwner;
+            }
+        }
+        public IToDoTasksRepository ToDoTask
+        {
+            get
+            {
+                if(_toDoTask == null)
+                {
+                    _toDoTask = new ToDoTasksRepository(_context);
+                }
+                return _toDoTask;
             }
         }
         public RepositoryWrapper(ApplicationDbContext context)

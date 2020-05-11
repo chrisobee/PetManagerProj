@@ -15,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using System.Security.Claims;
 using PetManager.ActionFilters;
 using Microsoft.AspNetCore.Http;
+using PetManager.Contracts;
 
 namespace PetManager
 {
@@ -33,6 +34,8 @@ namespace PetManager
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
 
             services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>()
