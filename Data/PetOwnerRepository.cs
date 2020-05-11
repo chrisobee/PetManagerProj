@@ -11,7 +11,24 @@ namespace PetManager.Data
     {
         public PetOwnerRepository(ApplicationDbContext applicationDbContext) : base(applicationDbContext)
         {
+        }
 
+        public void CreatePetOwner(PetOwner petOwner) => Create(petOwner);
+        public void DeletePetOwner(PetOwner petOwner) => Delete(petOwner);
+
+        public void EditPetOwner(PetOwner petOwner) => Update(petOwner);
+        public async Task<PetOwner> FindOwner(string userId)
+        {
+            var results = await FindByCondition(p => p.IdentityUserId == userId);
+            var currentUser = results.SingleOrDefault();
+            return currentUser;
+        }
+
+        public async Task<int> FindOwnerId(string userId)
+        {
+            var results = await FindByCondition(p => p.IdentityUserId == userId);
+            var currentUser = results.Select(p => p.PetOwnerId).FirstOrDefault();
+            return currentUser;
         }
     }
 }

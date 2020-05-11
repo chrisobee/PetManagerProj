@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using PetManager.Contracts;
 using PetManager.Data;
 using PetManager.Models;
+using PetManager.ViewModels;
 
 namespace PetManager.Controllers
 {
@@ -23,8 +25,29 @@ namespace PetManager.Controllers
         // GET: PetOwners
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.PetOwners.Include(p => p.IdentityUser);
-            return View(await applicationDbContext.ToListAsync());
+            //Get userId and instantiate View Model
+            TasksAndPetsVM tasksAndPets = new TasksAndPetsVM();
+            string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            //Find owner and set property on View Model
+            var owner = await _repo.PetOwner.FindOwner(userId);
+            tasksAndPets.PetOwner = owner;
+
+            //Find all of the owner's pets and set prop on View Model
+            var petIds = await _repo.PetOwnership.FindAllPets(owner.PetOwnerId);
+            tasksAndPets.CurrentUsersPets = await FindOwnersPets(petIds);
+            return View(tasksAndPets);
+        }
+
+        public async Task<List<Pet>> FindOwnersPets(List<int> petIds)
+        {
+            List<Pet> ownersPets = new List<Pet>();
+            foreach(int id in petIds)
+            {
+                var results = await _repo.Pet.FindByCondition(p => p.PetId == id);
+                ownersPets.Add(results.FirstOrDefault());
+            }
+            return ownersPets;
         }
 
         // GET: PetOwners/Details/5

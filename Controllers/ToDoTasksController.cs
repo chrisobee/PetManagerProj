@@ -19,38 +19,19 @@ namespace PetManager.Controllers
         {
             _repo = repo;
         }
-
-        // GET: ToDoTasks
-        public async Task<IActionResult> Index()
+        
+        //GET: ToDoTasks/Details
+        public async Task<IActionResult> Details(int taskId)
         {
-            var applicationDbContext = _context.Tasks.Include(t => t.Pet);
-            return View(await applicationDbContext.ToListAsync());
-        }
-
-        // GET: ToDoTasks/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var toDoTask = await _context.Tasks
-                .Include(t => t.Pet)
-                .FirstOrDefaultAsync(m => m.TaskId == id);
-            if (toDoTask == null)
-            {
-                return NotFound();
-            }
-
-            return View(toDoTask);
+            var task = await _repo.ToDoTask.FindTask(taskId);
+            return View(task);
         }
 
         // GET: ToDoTasks/Create
         public IActionResult Create()
         {
-            ViewData["PetId"] = new SelectList(_context.Pets, "PetId", "PetId");
-            return View();
+            var task = new ToDoTask();
+            return View(task);
         }
 
         // POST: ToDoTasks/Create
@@ -58,15 +39,14 @@ namespace PetManager.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TaskId,TaskName,TakeCompleted,TaskInterval,SpecialInstructions,PetId")] ToDoTask toDoTask)
+        public async Task<IActionResult> Create(ToDoTask toDoTask)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(toDoTask);
-                await _context.SaveChangesAsync();
+                _repo.ToDoTask.CreateTask(toDoTask);
+                await _repo.Save();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PetId"] = new SelectList(_context.Pets, "PetId", "PetId", toDoTask.PetId);
             return View(toDoTask);
         }
 
@@ -78,12 +58,11 @@ namespace PetManager.Controllers
                 return NotFound();
             }
 
-            var toDoTask = await _context.Tasks.FindAsync(id);
+            var toDoTask = await _repo.ToDoTask.FindTask(id);
             if (toDoTask == null)
             {
                 return NotFound();
             }
-            ViewData["PetId"] = new SelectList(_context.Pets, "PetId", "PetId", toDoTask.PetId);
             return View(toDoTask);
         }
 
@@ -92,7 +71,7 @@ namespace PetManager.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TaskId,TaskName,TakeCompleted,TaskInterval,SpecialInstructions,PetId")] ToDoTask toDoTask)
+        public async Task<IActionResult> Edit(int id, ToDoTask toDoTask)
         {
             if (id != toDoTask.TaskId)
             {
@@ -103,8 +82,8 @@ namespace PetManager.Controllers
             {
                 try
                 {
-                    _context.Update(toDoTask);
-                    await _context.SaveChangesAsync();
+                    _repo.ToDoTask.Update(toDoTask);
+                    await _repo.Save();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -119,7 +98,6 @@ namespace PetManager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PetId"] = new SelectList(_context.Pets, "PetId", "PetId", toDoTask.PetId);
             return View(toDoTask);
         }
 
@@ -131,9 +109,7 @@ namespace PetManager.Controllers
                 return NotFound();
             }
 
-            var toDoTask = await _context.Tasks
-                .Include(t => t.Pet)
-                .FirstOrDefaultAsync(m => m.TaskId == id);
+            var toDoTask = await _repo.ToDoTask.FindTask(id);
             if (toDoTask == null)
             {
                 return NotFound();
@@ -147,15 +123,23 @@ namespace PetManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var toDoTask = await _context.Tasks.FindAsync(id);
-            _context.Tasks.Remove(toDoTask);
-            await _context.SaveChangesAsync();
+            var toDoTask = await _repo.ToDoTask.FindTask(id);
+            _repo.ToDoTask.DeleteTask(toDoTask);
+            await _repo.Save();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ToDoTaskExists(int id)
         {
-            return _context.Tasks.Any(e => e.TaskId == id);
+            try
+            {
+                _repo.ToDoTask.FindTask(id);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
