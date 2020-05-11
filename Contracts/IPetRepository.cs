@@ -9,5 +9,8 @@ namespace PetManager.Contracts
     public interface IPetRepository : IRepositoryBase<Pet>
     {
         void CreatePet(Pet pet);
+        Task<Pet> GetPet(int? id);
+        void EditPet(Pet pet);
+        void DeletePet(Pet pet);
     }
 }

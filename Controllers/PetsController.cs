@@ -63,7 +63,7 @@ namespace PetManager.Controllers
             if (ModelState.IsValid)
             {
                 _repo.Pet.CreatePet(pet);
-                _repo.Save();
+                await _repo.Save();
                 return RedirectToAction("index");
             }
             
@@ -71,19 +71,19 @@ namespace PetManager.Controllers
         }
 
         // GET: Pets/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var pet = await _repo.Pet.FindAsync(id);
+            var pet = _repo.Pet.GetPet(id);
             if (pet == null)
             {
                 return NotFound();
             }
-            ViewData["AnimalTypeId"] = new SelectList(_context.Set<AnimalType>(), "AnimalTypeId", "AnimalTypeId", pet.AnimalTypeId);
+            
             return View(pet);
         }
 
@@ -92,7 +92,7 @@ namespace PetManager.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PetId,Name,Age,AnimalTypeId")] Pet pet)
+        public async Task<IActionResult> Edit(int id, Pet pet)
         {
             if (id != pet.PetId)
             {
@@ -103,8 +103,9 @@ namespace PetManager.Controllers
             {
                 try
                 {
-                    _context.Update(pet);
-                    await _context.SaveChangesAsync();
+                    _repo.Pet.EditPet(pet);
+                    await _repo.Save();
+                    return RedirectToAction("index");
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -117,23 +118,20 @@ namespace PetManager.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["AnimalTypeId"] = new SelectList(_context.Set<AnimalType>(), "AnimalTypeId", "AnimalTypeId", pet.AnimalTypeId);
+                
+            }            
             return View(pet);
         }
 
         // GET: Pets/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var pet = await _context.Pets
-                .Include(p => p.AnimalType)
-                .FirstOrDefaultAsync(m => m.PetId == id);
+            var pet = _repo.Pet.GetPet(id);
             if (pet == null)
             {
                 return NotFound();
@@ -147,15 +145,18 @@ namespace PetManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var pet = await _context.Pets.FindAsync(id);
-            _context.Pets.Remove(pet);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var pet = _repo.Pet.GetPet(id);
+            _repo.Pet.DeletePet(pet);
+            await _repo.Save();
+            return RedirectToAction("index");
         }
 
         private bool PetExists(int id)
         {
-            return _context.Pets.Any(e => e.PetId == id);
+            try 
+            
+            _repo.Pet.GetPet(id);
+            return 
         }
     }
 }
