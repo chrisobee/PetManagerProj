@@ -11,7 +11,23 @@ namespace PetManager.Data
     {
         public PetOwnerRepository(ApplicationDbContext applicationDbContext) : base(applicationDbContext)
         {
+        }
 
+        public void CreatePetOwner() => Create()
+
+        public void DeletePetOwner()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void EditPetOwner()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<PetOwner> FindOwner(string userId)
+        {
+            throw new NotImplementedException();
         }
     }
 }
