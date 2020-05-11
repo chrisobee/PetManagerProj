@@ -12,5 +12,15 @@ namespace PetManager.Data
         public PetRepository(ApplicationDbContext applicationDbContext) :base(applicationDbContext)
         {
         }
+
+        public void CreatePet(Pet pet) => Create(pet);
+        public async Task<Pet> GetPet(int? id)
+        {
+            var pet = await FindByCondition(p => p.PetId.Equals(id));
+            var SinglePet = pet.SingleOrDefault();
+            return SinglePet;
+        }
+        public void EditPet(Pet pet) => Update(pet);
+        public void DeletePet(Pet pet) => Delete(pet);
     }
 }
