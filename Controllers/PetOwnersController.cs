@@ -25,11 +25,29 @@ namespace PetManager.Controllers
         // GET: PetOwners
         public async Task<IActionResult> Index()
         {
+            //Get userId and instantiate View Model
             TasksAndPetsVM tasksAndPets = new TasksAndPetsVM();
             string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            tasksAndPets.PetOwner = await _repo.PetOwner.FindOwner(userId);
-            tasksAndPets.CurrentUsersPets = 
-            return View(petOwner);
+
+            //Find owner and set property on View Model
+            var owner = await _repo.PetOwner.FindOwner(userId);
+            tasksAndPets.PetOwner = owner;
+
+            //Find all of the owner's pets and set prop on View Model
+            var petIds = await _repo.PetOwnership.FindAllPets(owner.PetOwnerId);
+            tasksAndPets.CurrentUsersPets = await FindOwnersPets(petIds);
+            return View(tasksAndPets);
+        }
+
+        public async Task<List<Pet>> FindOwnersPets(List<int> petIds)
+        {
+            List<Pet> ownersPets = new List<Pet>();
+            foreach(int id in petIds)
+            {
+                var results = await _repo.Pet.FindByCondition(p => p.PetId == id);
+                ownersPets.Add(results.FirstOrDefault());
+            }
+            return ownersPets;
         }
 
         // GET: PetOwners/Details/5
