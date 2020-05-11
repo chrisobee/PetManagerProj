@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -55,7 +56,9 @@ namespace PetManager.Controllers
         {
             if (ModelState.IsValid)
             {
-                _repo.Pet.CreatePet(pet);
+                _repo.Pet.CreatePet(pet);                
+                await _repo.Save();
+                AddPetToJxnTable(pet);
                 await _repo.Save();
                 return RedirectToAction("index");
             }
@@ -63,6 +66,12 @@ namespace PetManager.Controllers
             return View(pet);
         }
 
+        public void AddPetToJxnTable(Pet pet)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var PetOwnerId = async _repo.PetOwner.FindOwnerId(userId);
+            _repo.PetOwnership.Create(PetOwnerId, pet.PetId);
+        }
         // GET: Pets/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
