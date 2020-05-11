@@ -48,8 +48,10 @@ namespace PetManager.Data.Migrations
                     b.HasData(
                         new
                         {
+
                             Id = "2a2bb75f-3f70-42dc-b3c9-ad02f7fa0938",
                             ConcurrencyStamp = "3539bb71-227c-49e7-a07c-b41bff8559f7",
+
                             Name = "Pet Owner",
                             NormalizedName = "PET OWNER"
                         });
