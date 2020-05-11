@@ -12,5 +12,15 @@ namespace PetManager.Data
         public PetOwnershipRepository(ApplicationDbContext applicationDbContext):base(applicationDbContext)
         {
         }
+
+        public void Create(int petOwnerId, int petId)
+        {
+            PetHumanJxn ownership = new PetHumanJxn
+            {
+                PetOwnerId = petOwnerId,
+                PetId = petId
+            };
+            Create(ownership);
+        }
     }
 }
