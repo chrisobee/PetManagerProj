@@ -31,6 +31,10 @@ namespace PetManager.Controllers
 
             //Find owner and set property on View Model
             var owner = await _repo.PetOwner.FindOwner(userId);
+            if(owner == null)
+            {
+                return RedirectToAction("Create");
+            }
             tasksAndPets.PetOwner = owner;
 
             //Find all of the owner's pets and set prop on View Model
@@ -97,6 +101,9 @@ namespace PetManager.Controllers
         {
             if (ModelState.IsValid)
             {
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                petOwner.IdentityUserId = userId;
+
                 _repo.PetOwner.CreatePetOwner(petOwner);
                 await _repo.Save();
                 return RedirectToAction(nameof(Index));
