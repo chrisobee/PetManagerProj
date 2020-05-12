@@ -57,10 +57,9 @@ namespace PetManager.Controllers
             {
                 return NotFound();
             }
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var petOwner = await _context.PetOwners
-                .Include(p => p.IdentityUser)
-                .FirstOrDefaultAsync(m => m.PetOwnerId == id);
+            var petOwner = await _repo.PetOwner.FindOwner(userId);
             if (petOwner == null)
             {
                 return NotFound();
