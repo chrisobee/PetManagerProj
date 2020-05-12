@@ -58,7 +58,7 @@ namespace PetManager.Controllers
             {
                 _repo.Pet.CreatePet(pet);                
                 await _repo.Save();
-                AddPetToJxnTable(pet);
+                await AddPetToJxnTable(pet);
                 await _repo.Save();
                 return RedirectToAction("index");
             }
@@ -66,10 +66,10 @@ namespace PetManager.Controllers
             return View(pet);
         }
 
-        public void AddPetToJxnTable(Pet pet)
+        public async Task AddPetToJxnTable(Pet pet)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var PetOwnerId = async _repo.PetOwner.FindOwnerId(userId);
+            var PetOwnerId = await _repo.PetOwner.FindOwnerId(userId);
             _repo.PetOwnership.Create(PetOwnerId, pet.PetId);
         }
         // GET: Pets/Edit/5
