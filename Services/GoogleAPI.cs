@@ -20,7 +20,7 @@ namespace PetManager.Services
         public async Task<PetOwner> GetOwnersCoordinates(PetOwner petOwner)
         {
             HttpClient client = new HttpClient();
-            HttpResponseMessage response = await client.GetAsync($"www.googleapis.com/geolocation/v1/geolocate?key={API_Key.googleAPIKey}");
+            HttpResponseMessage response = await client.PostAsync($"https://www.googleapis.com/geolocation/v1/geolocate?key={API_Key.googleAPIKey}", null);
             if (response.IsSuccessStatusCode)
             {
                 string json = response.Content.ReadAsStringAsync().Result;
