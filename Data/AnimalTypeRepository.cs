@@ -13,11 +13,18 @@ namespace PetManager.Data
         {
         }
 
-        public async Task<IEnumerable<AnimalType>> GetAnimalTypes()
+        public async Task<List<AnimalType>> GetAnimalTypes()
         {
             var results = await FindAll();
             var types = results.ToList();
             return types;
+        }
+
+        public async Task<AnimalType> GetAnimalTypeById(int? id)
+        {
+            var results = await FindByCondition(p => p.AnimalTypeId == id);
+            var animalType = results.SingleOrDefault();
+            return animalType;
         }
     }
 }

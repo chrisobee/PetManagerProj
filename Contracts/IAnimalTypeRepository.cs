@@ -8,6 +8,7 @@ namespace PetManager.Contracts
 {
     public interface IAnimalTypeRepository : IRepositoryBase<AnimalType>
     {
-        Task<IEnumerable<AnimalType>> GetAnimalTypes();
+        Task<List<AnimalType>> GetAnimalTypes();
+        Task<AnimalType> GetAnimalTypeById(int? id);
     }
 }
