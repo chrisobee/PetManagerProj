@@ -17,6 +17,7 @@ namespace PetManager.Models
         public double Lat { get; set; }
         public double Lng { get; set; }
         public PetOwner[] Contacts { get; set; } 
+        public string PhoneNumber { get; set; }
 
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }
