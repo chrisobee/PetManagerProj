@@ -36,7 +36,22 @@ namespace PetManager.Controllers
             //Find all of the owner's pets and set prop on View Model
             var petIds = await _repo.PetOwnership.FindAllPets(owner.PetOwnerId);
             tasksAndPets.CurrentUsersPets = await FindOwnersPets(petIds);
+
+            //Find all tasks and set prop on View Model
+            tasksAndPets.CurrentUsersTasks = await FindOwnersTasks(tasksAndPets.CurrentUsersPets);
+
             return View(tasksAndPets);
+        }
+
+        public async Task<List<ToDoTask>> FindOwnersTasks(List<Pet> pets)
+        {
+            List<ToDoTask> tasks = new List<ToDoTask>();
+            foreach(Pet pet in pets)
+            {
+                var results = await _repo.ToDoTask.GetTasksByPet(pet.PetId);
+                tasks.AddRange(results.ToList());
+            }
+            return tasks;
         }
 
         public async Task<List<Pet>> FindOwnersPets(List<int> petIds)
