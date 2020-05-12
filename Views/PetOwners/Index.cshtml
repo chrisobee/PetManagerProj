@@ -19,8 +19,47 @@
             <th>
                 @Html.DisplayNameFor(model => model.PetOwner.LastName)
             </th>
+<<<<<<< HEAD
             <th></th>
+=======
+>>>>>>> 7aadbe2b98c5fed766cc3c7e086e0da9860743b2
         </tr>
     </thead>
 
 </table>
+<div class="row">
+    <div class="col-md-3">
+        <table>
+            <thead>
+                <tr>
+                    <th>Pet Name</th>
+                    <th>Animal Type</th>
+                </tr>
+                @foreach (Pet pet in Model.CurrentUsersPets)
+                {
+                    <tr>
+                        <td>@pet.Name</td>
+                        <td>@pet.AnimalType.Name</td>
+                    </tr>
+                }
+            </thead>
+        </table>
+        
+    </div>
+    <div class="col-md-9" style="background-color:grey;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Task Name</th>
+                    <th>Task Completed</th>
+                </tr>
+            </thead>
+            @foreach(ToDoTask task in Model.CurrentUsersTasks)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(t => task.TaskName)</td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

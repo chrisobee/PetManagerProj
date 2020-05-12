@@ -5,6 +5,13 @@
     <UserSecretsId>aspnet-PetManager-A4E4A453-B6A3-4778-BC19-5AE251315468</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="ViewModels\NewFolder\**" />
+    <Content Remove="ViewModels\NewFolder\**" />
+    <EmbeddedResource Remove="ViewModels\NewFolder\**" />
+    <None Remove="ViewModels\NewFolder\**" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.3" />
@@ -19,11 +26,14 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Twilio" Version="5.40.0" />
+<<<<<<< HEAD
   </ItemGroup>
 
 
   <ItemGroup>
     <Folder Include="Data\Migrations\" />
+=======
+>>>>>>> 7aadbe2b98c5fed766cc3c7e086e0da9860743b2
   </ItemGroup>
 
 </Project>

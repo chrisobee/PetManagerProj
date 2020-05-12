@@ -41,10 +41,17 @@ namespace PetManager.Controllers
             //Find all of the owner's pets and set prop on View Model
             var petIds = await _repo.PetOwnership.FindAllPets(owner.PetOwnerId);
             tasksAndPets.CurrentUsersPets = await FindOwnersPets(petIds);
+<<<<<<< HEAD
 
             //Find all tasks and set prop on View Model
             tasksAndPets.CurrentUsersTasks = await FindOwnersTasks(tasksAndPets.CurrentUsersPets);
 
+=======
+            tasksAndPets.CurrentUsersPets = await SetPetsAnimalTypes(tasksAndPets.CurrentUsersPets);
+
+            //Find all tasks and set prop on View Model
+            tasksAndPets.CurrentUsersTasks = await FindOwnersTasks(tasksAndPets.CurrentUsersPets);
+>>>>>>> 7aadbe2b98c5fed766cc3c7e086e0da9860743b2
             return View(tasksAndPets);
         }
 
@@ -68,6 +75,15 @@ namespace PetManager.Controllers
                 ownersPets.Add(results.FirstOrDefault());
             }
             return ownersPets;
+        }
+
+        public async Task<List<Pet>> SetPetsAnimalTypes(List<Pet> pets)
+        {
+            foreach (Pet pet in pets)
+            {
+                pet.AnimalType = await _repo.AnimalType.GetAnimalTypeById(pet.AnimalTypeId);
+            }
+            return pets;
         }
 
         // GET: PetOwners/Details/5
@@ -104,7 +120,11 @@ namespace PetManager.Controllers
             {
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 petOwner.IdentityUserId = userId;
+<<<<<<< HEAD
                 petOwner = await _googleAPI.GetOwnersCoordinates(petOwner);
+=======
+
+>>>>>>> 7aadbe2b98c5fed766cc3c7e086e0da9860743b2
                 _repo.PetOwner.CreatePetOwner(petOwner);
                 await _repo.Save();
                 return RedirectToAction(nameof(Index));
