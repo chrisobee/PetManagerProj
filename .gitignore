@@ -351,3 +351,6 @@ MigrationBackup/
 
 # Avoiding Sharing Migrations
 /Data/Migrations
+
+#API Key
+/API Key.cs
