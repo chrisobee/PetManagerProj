@@ -26,14 +26,6 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Twilio" Version="5.40.0" />
-<<<<<<< HEAD
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <Folder Include="Data\Migrations\" />
-=======
->>>>>>> 7aadbe2b98c5fed766cc3c7e086e0da9860743b2
   </ItemGroup>
 
 </Project>
