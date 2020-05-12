@@ -1,4 +1,4 @@
-﻿@model PetManager.Models.ToDoTask
+﻿@model PetManager.ViewModels.TaskWithAllCurrentPets
 
 @{
     ViewData["Title"] = "Create";
@@ -13,28 +13,23 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="TaskName" class="control-label"></label>
-                <input asp-for="TaskName" class="form-control" />
-                <span asp-validation-for="TaskName" class="text-danger"></span>
+                <label asp-for="Task.TaskName" class="control-label"></label>
+                <input asp-for="Task.TaskName" class="form-control" />
+                <span asp-validation-for="Task.TaskName" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="TaskCompleted" /> @Html.DisplayNameFor(model => model.TaskCompleted)
+                    <input class="form-check-input" asp-for="Task.TaskCompleted" /> @Html.DisplayNameFor(model => model.Task.TaskCompleted)
                 </label>
             </div>
             <div class="form-group">
-                <label asp-for="TaskInterval" class="control-label"></label>
-                <input asp-for="TaskInterval" class="form-control" />
-                <span asp-validation-for="TaskInterval" class="text-danger"></span>
+                <label asp-for="Task.SpecialInstructions" class="control-label"></label>
+                <input asp-for="Task.SpecialInstructions" class="form-control" />
+                <span asp-validation-for="Task.SpecialInstructions" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SpecialInstructions" class="control-label"></label>
-                <input asp-for="SpecialInstructions" class="form-control" />
-                <span asp-validation-for="SpecialInstructions" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PetId" class="control-label"></label>
-                <select asp-for="PetId" class ="form-control" asp-items="ViewBag.PetId"></select>
+                <label asp-for="Task.PetId" class="control-label"></label>
+                <select asp-for="Task.PetId" class ="form-control" asp-items="@(new SelectList(Model.CurrentPets,"PetId", "Name"))"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using PetManager.Contracts;
 using PetManager.Data;
 using PetManager.Models;
+using PetManager.ViewModels;
 
 namespace PetManager.Controllers
 {
@@ -28,24 +30,43 @@ namespace PetManager.Controllers
         }
 
         // GET: ToDoTasks/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            var task = new ToDoTask();
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var owner = await _repo.PetOwner.FindOwner(userId);
+            var petIds = await _repo.PetOwnership.FindAllPets(owner.PetOwnerId);
+
+
+            TaskWithAllCurrentPets task = new TaskWithAllCurrentPets()
+            {
+                Task = new ToDoTask(),
+                CurrentPets = await FindOwnersPets(petIds)
+            };
             return View(task);
         }
 
+        public async Task<List<Pet>> FindOwnersPets(List<int> petIds)
+        {
+            List<Pet> ownersPets = new List<Pet>();
+            foreach (int id in petIds)
+            {
+                var results = await _repo.Pet.FindByCondition(p => p.PetId == id);
+                ownersPets.Add(results.FirstOrDefault());
+            }
+            return ownersPets;
+        }
         // POST: ToDoTasks/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ToDoTask toDoTask)
+        public async Task<IActionResult> Create(TaskWithAllCurrentPets toDoTask)
         {
             if (ModelState.IsValid)
             {
-                _repo.ToDoTask.CreateTask(toDoTask);
+                _repo.ToDoTask.CreateTask(toDoTask.Task);
                 await _repo.Save();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "PetOwners");
             }
             return View(toDoTask);
         }
