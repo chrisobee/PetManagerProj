@@ -56,6 +56,7 @@ namespace PetManager.Controllers
         {
             if (ModelState.IsValid)
             {
+                //Add pet to pet table
                 _repo.Pet.CreatePet(pet);                
                 await _repo.Save();
                 await AddPetToJxnTable(pet);
