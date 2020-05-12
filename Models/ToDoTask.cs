@@ -12,7 +12,7 @@ namespace PetManager.Models
         [Key]
         public int TaskId { get; set; }
         public string TaskName { get; set; }
-        public bool TakeCompleted { get; set; }
+        public bool TaskCompleted { get; set; }
         public TimeSpan TaskInterval { get; set; }
         public string SpecialInstructions { get; set; }
 

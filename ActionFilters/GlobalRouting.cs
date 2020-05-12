@@ -28,7 +28,7 @@ namespace PetManager.ActionFilters
             {
                 if(_claimsPrincipal.IsInRole("Pet Owner"))
                 {
-                    context.Result = new RedirectToActionResult("Index", "Pet Owner", null);
+                    context.Result = new RedirectToActionResult("Index", "PetOwners", null);
                 }
             }
         }

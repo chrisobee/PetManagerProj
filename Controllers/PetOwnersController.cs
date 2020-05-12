@@ -16,10 +16,11 @@ namespace PetManager.Controllers
     public class PetOwnersController : Controller
     {
         private readonly IRepositoryWrapper _repo;
-
-        public PetOwnersController(IRepositoryWrapper repo)
+        private readonly IGoogleAPIs _googleAPI;
+        public PetOwnersController(IRepositoryWrapper repo, IGoogleAPIs googleAPI)
         {
             _repo = repo;
+            _googleAPI = googleAPI;
         }
 
         // GET: PetOwners
@@ -31,12 +32,31 @@ namespace PetManager.Controllers
 
             //Find owner and set property on View Model
             var owner = await _repo.PetOwner.FindOwner(userId);
+            if(owner == null)
+            {
+                return RedirectToAction("Create");
+            }
             tasksAndPets.PetOwner = owner;
 
             //Find all of the owner's pets and set prop on View Model
             var petIds = await _repo.PetOwnership.FindAllPets(owner.PetOwnerId);
             tasksAndPets.CurrentUsersPets = await FindOwnersPets(petIds);
+
+            //Find all tasks and set prop on View Model
+            tasksAndPets.CurrentUsersTasks = await FindOwnersTasks(tasksAndPets.CurrentUsersPets);
+
             return View(tasksAndPets);
+        }
+
+        public async Task<List<ToDoTask>> FindOwnersTasks(List<Pet> pets)
+        {
+            List<ToDoTask> tasks = new List<ToDoTask>();
+            foreach(Pet pet in pets)
+            {
+                var results = await _repo.ToDoTask.GetTasksByPet(pet.PetId);
+                tasks.AddRange(results.ToList());
+            }
+            return tasks;
         }
 
         public async Task<List<Pet>> FindOwnersPets(List<int> petIds)
@@ -58,9 +78,7 @@ namespace PetManager.Controllers
                 return NotFound();
             }
 
-            var petOwner = await _context.PetOwners
-                .Include(p => p.IdentityUser)
-                .FirstOrDefaultAsync(m => m.PetOwnerId == id);
+            var petOwner = await _repo.PetOwner.FindOwnerWithId(id);
             if (petOwner == null)
             {
                 return NotFound();
@@ -72,7 +90,6 @@ namespace PetManager.Controllers
         // GET: PetOwners/Create
         public IActionResult Create()
         {
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
@@ -81,15 +98,17 @@ namespace PetManager.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PetOwnerId,Name,Lat,Lng,IdentityUserId")] PetOwner petOwner)
+        public async Task<IActionResult> Create(PetOwner petOwner)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(petOwner);
-                await _context.SaveChangesAsync();
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                petOwner.IdentityUserId = userId;
+                petOwner = await _googleAPI.GetOwnersCoordinates(petOwner);
+                _repo.PetOwner.CreatePetOwner(petOwner);
+                await _repo.Save();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", petOwner.IdentityUserId);
             return View(petOwner);
         }
 
@@ -101,12 +120,11 @@ namespace PetManager.Controllers
                 return NotFound();
             }
 
-            var petOwner = await _context.PetOwners.FindAsync(id);
+            var petOwner = await _repo.PetOwner.FindOwnerWithId(id);
             if (petOwner == null)
             {
                 return NotFound();
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", petOwner.IdentityUserId);
             return View(petOwner);
         }
 
@@ -115,7 +133,7 @@ namespace PetManager.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PetOwnerId,Name,Lat,Lng,IdentityUserId")] PetOwner petOwner)
+        public async Task<IActionResult> Edit(int id, PetOwner petOwner)
         {
             if (id != petOwner.PetOwnerId)
             {
@@ -126,8 +144,8 @@ namespace PetManager.Controllers
             {
                 try
                 {
-                    _context.Update(petOwner);
-                    await _context.SaveChangesAsync();
+                    _repo.PetOwner.EditPetOwner(petOwner);
+                    await _repo.Save();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -142,7 +160,6 @@ namespace PetManager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", petOwner.IdentityUserId);
             return View(petOwner);
         }
 
@@ -154,9 +171,7 @@ namespace PetManager.Controllers
                 return NotFound();
             }
 
-            var petOwner = await _context.PetOwners
-                .Include(p => p.IdentityUser)
-                .FirstOrDefaultAsync(m => m.PetOwnerId == id);
+            var petOwner = await _repo.PetOwner.FindOwnerWithId(id);
             if (petOwner == null)
             {
                 return NotFound();
@@ -170,15 +185,23 @@ namespace PetManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var petOwner = await _context.PetOwners.FindAsync(id);
-            _context.PetOwners.Remove(petOwner);
-            await _context.SaveChangesAsync();
+            var petOwner = await _repo.PetOwner.FindOwnerWithId(id);
+            _repo.PetOwner.DeletePetOwner(petOwner);
+            await _repo.Save();
             return RedirectToAction(nameof(Index));
         }
 
         private bool PetOwnerExists(int id)
         {
-            return _context.PetOwners.Any(e => e.PetOwnerId == id);
+            try
+            {
+                _repo.PetOwner.FindOwnerWithId(id);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

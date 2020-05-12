@@ -24,6 +24,12 @@ namespace PetManager.Data
             return currentUser;
         }
 
+        public async Task<PetOwner> FindOwnerWithId(int? id)
+        {
+            var results = await FindByCondition(p => p.PetOwnerId == id);
+            var petOwner = results.SingleOrDefault();
+            return petOwner;
+        }
         public async Task<int> FindOwnerId(string userId)
         {
             var results = await FindByCondition(p => p.IdentityUserId == userId);

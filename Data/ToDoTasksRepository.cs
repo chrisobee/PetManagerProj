@@ -26,11 +26,11 @@ namespace PetManager.Data
             return singleTask;
         }
 
-        public async Task<IEnumerable<ToDoTask>> GetTasksByPets(int? petId)
+        public async Task<IEnumerable<ToDoTask>> GetTasksByPet(int? petId)
         {
-            var tasks = await FindByCondition(t => petIds.Contains(t.PetId));
+            var results = await FindByCondition(t => t.PetId == petId);
+            var tasks = results.ToList();
             return tasks;
         }
-        //public IEnumerable<ToDoTask> GetTasks(List<int> petIds) => FindAll().Where(t => petIds.Contains(t.PetId));
     }
 }

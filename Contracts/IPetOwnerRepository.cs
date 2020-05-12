@@ -9,6 +9,7 @@ namespace PetManager.Contracts
     public interface IPetOwnerRepository : IRepositoryBase<PetOwner>
     {
         Task<PetOwner> FindOwner(string userId);
+        Task<PetOwner> FindOwnerWithId(int? id);
         Task<int> FindOwnerId(string userId);
         void CreatePetOwner(PetOwner petOwner);
         void EditPetOwner(PetOwner petOwner);

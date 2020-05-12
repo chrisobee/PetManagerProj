@@ -16,6 +16,7 @@ using System.Security.Claims;
 using PetManager.ActionFilters;
 using Microsoft.AspNetCore.Http;
 using PetManager.Contracts;
+using PetManager.Services;
 
 namespace PetManager
 {
@@ -49,6 +50,8 @@ namespace PetManager
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddScoped<IGoogleAPIs, GoogleAPI>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

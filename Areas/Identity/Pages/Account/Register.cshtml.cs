@@ -112,7 +112,7 @@ namespace PetManager.Areas.Identity.Pages.Account
                     else
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                        return RedirectToAction("Create", "PetOwners", null);
                     }
                 }
                 foreach (var error in result.Errors)
