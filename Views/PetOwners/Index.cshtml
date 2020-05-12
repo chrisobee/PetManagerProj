@@ -19,8 +19,26 @@
             <th>
                 @Html.DisplayNameFor(model => model.PetOwner.LastName)
             </th>
-            <th></th>
         </tr>
     </thead>
 
 </table>
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-9" style="background-color:grey;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Task Name</th>
+                    <th>Task Completed</th>
+                </tr>
+            </thead>
+            @foreach(ToDoTask task in Model.CurrentUsersTasks)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(t => task.TaskName)</td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

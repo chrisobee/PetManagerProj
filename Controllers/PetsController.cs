@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using PetManager.Contracts;
 using PetManager.Data;
 using PetManager.Models;
+using PetManager.ViewModels;
 
 namespace PetManager.Controllers
 {
@@ -41,10 +42,22 @@ namespace PetManager.Controllers
         }
 
         // GET: Pets/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            var pet = new Pet();
+            PetsAndAnimalTypeVM pet = new PetsAndAnimalTypeVM()
+            {
+                AnimalTypes = await GetAnimalTypes(),
+                Pet = new Pet()
+            };
+            
             return View(pet);
+        }
+
+        public async Task<List<AnimalType>> GetAnimalTypes()
+        {
+            var results = await _repo.AnimalType.GetAnimalTypes();
+            var types = results.ToList();
+            return types;
         }
 
         // POST: Pets/Create
@@ -63,7 +76,7 @@ namespace PetManager.Controllers
                 //Add Pet to pet and owner jxn table
                 await AddPetToJxnTable(pet);
                 await _repo.Save();
-                return RedirectToAction("index");
+                return RedirectToAction("Index", "PetOwners");
             }
             
             return View(pet);

@@ -11,6 +11,7 @@ namespace PetManager.Contracts
         IPetRepository Pet { get; }
         IToDoTasksRepository ToDoTask { get; }
         IPetOwnershipRepository PetOwnership { get; }
+        IAnimalTypeRepository AnimalType { get; }
         Task Save();
     }
 }
