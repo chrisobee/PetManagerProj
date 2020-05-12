@@ -97,12 +97,11 @@ namespace PetManager.Controllers
                 return NotFound();
             }
 
-            var petOwner = await _context.PetOwners.FindAsync(id);
+            var petOwner = await _repo.PetOwner.FindOwnerWithId(id);
             if (petOwner == null)
             {
                 return NotFound();
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", petOwner.IdentityUserId);
             return View(petOwner);
         }
 
@@ -111,7 +110,7 @@ namespace PetManager.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PetOwnerId,Name,Lat,Lng,IdentityUserId")] PetOwner petOwner)
+        public async Task<IActionResult> Edit(int id, PetOwner petOwner)
         {
             if (id != petOwner.PetOwnerId)
             {
@@ -122,8 +121,8 @@ namespace PetManager.Controllers
             {
                 try
                 {
-                    _context.Update(petOwner);
-                    await _context.SaveChangesAsync();
+                    _repo.PetOwner.EditPetOwner(petOwner);
+                    await _repo.Save();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -138,7 +137,6 @@ namespace PetManager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", petOwner.IdentityUserId);
             return View(petOwner);
         }
 
@@ -150,9 +148,7 @@ namespace PetManager.Controllers
                 return NotFound();
             }
 
-            var petOwner = await _context.PetOwners
-                .Include(p => p.IdentityUser)
-                .FirstOrDefaultAsync(m => m.PetOwnerId == id);
+            var petOwner = await _repo.PetOwner.FindOwnerWithId(id);
             if (petOwner == null)
             {
                 return NotFound();
@@ -166,15 +162,23 @@ namespace PetManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var petOwner = await _context.PetOwners.FindAsync(id);
-            _context.PetOwners.Remove(petOwner);
-            await _context.SaveChangesAsync();
+            var petOwner = await _repo.PetOwner.FindOwnerWithId(id);
+            _repo.PetOwner.DeletePetOwner(petOwner);
+            await _repo.Save();
             return RedirectToAction(nameof(Index));
         }
 
         private bool PetOwnerExists(int id)
         {
-            return _context.PetOwners.Any(e => e.PetOwnerId == id);
+            try
+            {
+                _repo.PetOwner.FindOwnerWithId(id);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
