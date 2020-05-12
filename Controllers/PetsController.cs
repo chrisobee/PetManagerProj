@@ -72,8 +72,6 @@ namespace PetManager.Controllers
                 //Add pet to pet table
                 _repo.Pet.CreatePet(pet);                
                 await _repo.Save();
-
-                //Add Pet to pet and owner jxn table
                 await AddPetToJxnTable(pet);
                 await _repo.Save();
                 return RedirectToAction("Index", "PetOwners");
