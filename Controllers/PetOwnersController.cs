@@ -57,9 +57,8 @@ namespace PetManager.Controllers
             {
                 return NotFound();
             }
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var petOwner = await _repo.PetOwner.FindOwner(userId);
+            var petOwner = await _repo.PetOwner.FindOwnerWithId(id);
             if (petOwner == null)
             {
                 return NotFound();
@@ -71,7 +70,6 @@ namespace PetManager.Controllers
         // GET: PetOwners/Create
         public IActionResult Create()
         {
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
@@ -80,15 +78,14 @@ namespace PetManager.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PetOwnerId,Name,Lat,Lng,IdentityUserId")] PetOwner petOwner)
+        public async Task<IActionResult> Create(PetOwner petOwner)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(petOwner);
-                await _context.SaveChangesAsync();
+                _repo.PetOwner.CreatePetOwner(petOwner);
+                await _repo.Save();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", petOwner.IdentityUserId);
             return View(petOwner);
         }
 
