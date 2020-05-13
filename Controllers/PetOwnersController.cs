@@ -47,6 +47,7 @@ namespace PetManager.Controllers
 
             //Find all tasks and set prop on View Model
             tasksAndPets.CurrentUsersTasks = await FindOwnersTasks(tasksAndPets.CurrentUsersPets);
+            tasksAndPets.CurrentUsersTasks = FilterTasks(tasksAndPets.CurrentUsersTasks);
 
             //Find pet stores
             tasksAndPets.NearbyPetStores = await ShowNearbyPetStores(owner.PetOwnerId);

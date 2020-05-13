@@ -15,7 +15,7 @@ namespace PetManager.Services
         {
         }
                 
-        public async Task SendSMSReminder(PetOwner petOwner, List<ToDoTask> toDoTasks)
+        public void SendSMSReminder(PetOwner petOwner, List<ToDoTask> toDoTasks)
         {
             TwilioClient.Init(API_Key.twilioSID, API_Key.twilioAuthToken);
 
