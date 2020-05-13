@@ -56,10 +56,9 @@
                 <tr>
                     <td>@Html.DisplayFor(t => task.TaskName)</td>
                     <td>
-                        <form>
-                            <input type="checkbox" asp-for="@task.TaskCompleted" />
-                            <label asp-for="@task.TaskCompleted">Task Completed</label>
-                        </form>
+                        <label class="form-check-label">
+                            <input id="taskCheck" class="form-check-input" asp-for="@task.TaskCompleted" /> @Html.DisplayNameFor(model => task.TaskCompleted)
+                        </label>
                     </td>
                 </tr>
             }
