@@ -52,6 +52,7 @@ namespace PetManager
             services.AddRazorPages();
 
             services.AddScoped<IGoogleAPIs, GoogleAPI>();
+            services.AddScoped<ITwilioAPIs, TwilioAPI>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using PetManager.Contracts;
 using PetManager.Data;
 using PetManager.Models;
+using PetManager.Services;
 using PetManager.ViewModels;
 
 namespace PetManager.Controllers
@@ -45,6 +46,12 @@ namespace PetManager.Controllers
             //Find all tasks and set prop on View Model
             tasksAndPets.CurrentUsersTasks = await FindOwnersTasks(tasksAndPets.CurrentUsersPets);
 
+            //Find pet stores
+            tasksAndPets.NearbyPetStores = await ShowNearbyPetStores(owner.PetOwnerId);
+
+            //Find vets
+            tasksAndPets.NearbyVets = await ShowNearbyVets(owner.PetOwnerId);
+
             return View(tasksAndPets);
         }
 
@@ -58,7 +65,18 @@ namespace PetManager.Controllers
             }
             return tasks;
         }
-
+        public List<ToDoTask> FilterTasks(List<ToDoTask> allToDoTasks)
+        {
+            List<ToDoTask> filteredList = new List<ToDoTask>();
+            foreach (ToDoTask task in allToDoTasks)
+            {
+                if (task.TaskCompleted == false || task.ResetDay != DateTime.Today.Day)
+                {
+                    filteredList.Add(task);
+                }
+            }
+            return filteredList;
+        }
         public async Task<List<Pet>> FindOwnersPets(List<int> petIds)
         {
             List<Pet> ownersPets = new List<Pet>();
@@ -191,6 +209,23 @@ namespace PetManager.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<List<NearbyPlace>> ShowNearbyVets(int id)
+        {
+            var petOwner = await _repo.PetOwner.FindOwnerWithId(id);
+            List<NearbyPlace> nearbyVets = await _googleAPI.GetNearbyVets(petOwner);
+            nearbyVets = _googleAPI.PareDownList(nearbyVets);
+            return nearbyVets;
+        }
+
+        public async Task<List<NearbyPlace>> ShowNearbyPetStores(int id)
+        {
+            var petOwner = await _repo.PetOwner.FindOwnerWithId(id);
+            List<NearbyPlace> nearbyStores = await _googleAPI.GetNearbyPetStores(petOwner);
+            nearbyStores = _googleAPI.PareDownList(nearbyStores);
+            return nearbyStores;
+        }
+
+        
         private bool PetOwnerExists(int id)
         {
             try
