@@ -58,6 +58,20 @@ namespace PetManager.Controllers
             return View(tasksAndPets);
         }
 
+        //GET: PetOwners/Search
+        public async Task<IActionResult> Search()
+        {
+            return View();
+        }
+
+        //POST: PetOwners/Search/(email)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Search(string email)
+        {
+
+        }
+
         public async Task<List<ToDoTask>> FindOwnersTasks(List<Pet> pets)
         {
             List<ToDoTask> tasks = new List<ToDoTask>();
