@@ -15,13 +15,13 @@ namespace PetManager.Services
         {
         }
                 
-        public async Task SendSMSReminder(PetOwner petOwner, List<ToDoTask> toDoTasks)
+        public void SendSMSReminder(PetOwner petOwner, List<ToDoTask> toDoTasks)
         {
             TwilioClient.Init(API_Key.twilioSID, API_Key.twilioAuthToken);
-
+            string toDoList = "list of tasks here";
             var message = MessageResource.Create(
                 from: new Twilio.Types.PhoneNumber($"+{API_Key.twilioPhoneNum}"),
-                body: "body",
+                body: "$Daily Reminder:",
                 to: new Twilio.Types.PhoneNumber($"+{petOwner.PhoneNumber}")
             );
         }

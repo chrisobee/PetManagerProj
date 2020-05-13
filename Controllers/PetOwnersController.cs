@@ -221,18 +221,18 @@ namespace PetManager.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<List<NearbyPlace>> ShowNearbyVets(int id)
+        public async Task<NearbyPlace> ShowNearbyVets(int id)
         {
             var petOwner = await _repo.PetOwner.FindOwnerWithId(id);
-            List<NearbyPlace> nearbyVets = await _googleAPI.GetNearbyVets(petOwner);
+            NearbyPlace nearbyVets = await _googleAPI.GetNearbyVets(petOwner);
             nearbyVets = _googleAPI.PareDownList(nearbyVets);
             return nearbyVets;
         }
 
-        public async Task<List<NearbyPlace>> ShowNearbyPetStores(int id)
+        public async Task<NearbyPlace> ShowNearbyPetStores(int id)
         {
             var petOwner = await _repo.PetOwner.FindOwnerWithId(id);
-            List<NearbyPlace> nearbyStores = await _googleAPI.GetNearbyPetStores(petOwner);
+            NearbyPlace nearbyStores = await _googleAPI.GetNearbyPetStores(petOwner);
             nearbyStores = _googleAPI.PareDownList(nearbyStores);
             return nearbyStores;
         }

@@ -10,8 +10,8 @@ namespace PetManager.Contracts
     public interface IGoogleAPIs
     {
         Task<PetOwner> GetOwnersCoordinates(PetOwner petOwner);
-        Task<List<NearbyPlace>> GetNearbyPetStores(PetOwner petOwner);
-        Task<List<NearbyPlace>> GetNearbyVets(PetOwner petOwner);
-        List<NearbyPlace> PareDownList(List<NearbyPlace> nearbyPlaces);
+        Task<NearbyPlace> GetNearbyPetStores(PetOwner petOwner);
+        Task<NearbyPlace> GetNearbyVets(PetOwner petOwner);
+        NearbyPlace PareDownList(NearbyPlace nearbyPlaces);
     }
 }

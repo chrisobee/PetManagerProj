@@ -12,7 +12,7 @@ namespace PetManager.ViewModels
         public PetOwner PetOwner { get; set; }
         public List<Pet> CurrentUsersPets { get; set; }
         public List<ToDoTask> CurrentUsersTasks { get; set; }
-        public List<NearbyPlace> NearbyVets { get; set; }
-        public List<NearbyPlace> NearbyPetStores { get; set; }
+        public NearbyPlace NearbyVets { get; set; }
+        public NearbyPlace NearbyPetStores { get; set; }
     }
 }

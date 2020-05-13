@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using PetManager.Contracts;
 using PetManager.Models;
+using PetManager.Services;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -34,7 +35,7 @@ namespace PetManager.Services
             return petOwner;
         }
 
-        public async Task<List<NearbyPlace>> GetNearbyPetStores(PetOwner petOwner)
+        public async Task<NearbyPlace> GetNearbyPetStores(PetOwner petOwner)
         {
             HttpClient client = new HttpClient();
             HttpResponseMessage response = await client.GetAsync($"https://maps.googleapis.com/maps/api/" +
@@ -44,13 +45,12 @@ namespace PetManager.Services
             if (response.IsSuccessStatusCode)
             {
                 string jsonResult = await response.Content.ReadAsStringAsync();
-                var nearbyPlaces = JsonConvert.DeserializeObject<List<NearbyPlace>>(jsonResult);
-                return nearbyPlaces;
+                return JsonConvert.DeserializeObject<NearbyPlace>(jsonResult);                 
             }
             return null;
         }
 
-        public async Task<List<NearbyPlace>> GetNearbyVets(PetOwner petOwner)
+        public async Task<NearbyPlace> GetNearbyVets(PetOwner petOwner)
         {
             HttpClient client = new HttpClient();
             HttpResponseMessage response = await client.GetAsync($"https://maps.googleapis.com/maps/api/" +
@@ -60,20 +60,21 @@ namespace PetManager.Services
             if (response.IsSuccessStatusCode)
             {
                 string jsonResult = await response.Content.ReadAsStringAsync();
-                var nearbyPlaces = JsonConvert.DeserializeObject<List<NearbyPlace>>(jsonResult);
+                var nearbyPlaces = JsonConvert.DeserializeObject<NearbyPlace>(jsonResult);
                 return nearbyPlaces;
             }
             return null;
         }
 
-        public List<NearbyPlace> PareDownList(List<NearbyPlace> nearbyPlaces)
+        public NearbyPlace PareDownList(NearbyPlace nearbyPlaces)
         {
-            if(nearbyPlaces.Count > 10)
+            if(nearbyPlaces.results.Length > 10)
             {
-                List<NearbyPlace> paredNearbyPlaces = new List<NearbyPlace>();
+                NearbyPlace paredNearbyPlaces = new NearbyPlace();
+                paredNearbyPlaces.results = new Result[10];
                 for (int i = 0; i < 10; i++)
                 {
-                    paredNearbyPlaces.Add(nearbyPlaces[i]);
+                    paredNearbyPlaces.results[i] = nearbyPlaces.results[i];
                 }
                 return paredNearbyPlaces;
             }
