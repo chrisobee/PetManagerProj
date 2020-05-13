@@ -76,29 +76,43 @@ namespace PetManager.Controllers
             }
             else
             {
-                return RedirectToAction("ConfirmContact", person.PetOwnerId);
+                return RedirectToAction("ContactDetails", "PetOwners", person);
             }
         }
 
         //GET: PetOwners/ConfirmContact
-        public async Task<IActionResult> ConfirmContact(int petOwnerId)
+        public async Task<IActionResult> ContactDetails(PetOwner owner)
         {
-            var person = await _repo.PetOwner.FindOwnerWithId(petOwnerId);
-            return View(person);
+            return View(owner);
         }
 
         //POST: PetOwners/ConfirmContact
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ConfirmContact(PetOwner owner)
+        public async Task<IActionResult> ConfirmContact(int id)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var currentUser = await _repo.PetOwner.FindOwner(userId);
-            currentUser.Contacts = new List<PetOwner>(currentUser.Contacts) { owner }.ToArray();
+            var contactToAdd = await _repo.PetOwner.FindOwnerWithId(id);
+            currentUser.Contacts = AddContactToArray(currentUser.Contacts, contactToAdd);
             _repo.PetOwner.EditPetOwner(currentUser);
             await _repo.Save();
 
             return RedirectToAction("Index");
+        }
+
+        public PetOwner[] AddContactToArray(PetOwner[] contacts, PetOwner contactToAdd)
+        {
+            if(contacts == null)
+            {
+                contacts = new PetOwner[] { contactToAdd};
+                return contacts;
+            }
+            else
+            {
+                contacts = new List<PetOwner>(contacts) { contactToAdd }.ToArray();
+                return contacts;
+            }
         }
 
         public async Task<List<ToDoTask>> FindOwnersTasks(List<Pet> pets)
