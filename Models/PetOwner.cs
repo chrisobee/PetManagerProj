@@ -16,6 +16,8 @@ namespace PetManager.Models
         public string LastName { get; set; }
         public double Lat { get; set; }
         public double Lng { get; set; }
+        public int? ResetDay { get; set; }
+
         [NotMapped]
         public PetOwner[] Contacts { get; set; } 
         public string PhoneNumber { get; set; }

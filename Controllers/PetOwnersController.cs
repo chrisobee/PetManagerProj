@@ -18,10 +18,12 @@ namespace PetManager.Controllers
     {
         private readonly IRepositoryWrapper _repo;
         private readonly IGoogleAPIs _googleAPI;
-        public PetOwnersController(IRepositoryWrapper repo, IGoogleAPIs googleAPI)
+        private readonly ITwilioAPIs _twilioAPI;
+        public PetOwnersController(IRepositoryWrapper repo, IGoogleAPIs googleAPI, ITwilioAPIs twilioAPI)
         {
             _repo = repo;
             _googleAPI = googleAPI;
+            _twilioAPI = twilioAPI;
         }
 
         // GET: PetOwners
@@ -54,6 +56,13 @@ namespace PetManager.Controllers
 
             //Find vets
             tasksAndPets.NearbyVets = await ShowNearbyVets(owner.PetOwnerId);
+
+            //Send Daily Reminder            
+            if(DateTime.Now.Hour > 12 && owner.ResetDay != DateTime.Now.Day)
+            {
+                _twilioAPI.SendSMSReminder(owner, tasksAndPets.CurrentUsersTasks);
+                owner.ResetDay = DateTime.Now.Day;
+            }                
 
             return View(tasksAndPets);
         }
@@ -294,6 +303,8 @@ namespace PetManager.Controllers
             nearbyStores = _googleAPI.PareDownList(nearbyStores);
             return nearbyStores;
         }
+
+        
 
         
         private bool PetOwnerExists(int id)
