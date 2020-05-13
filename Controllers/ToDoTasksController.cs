@@ -29,6 +29,15 @@ namespace PetManager.Controllers
             return View(task);
         }
 
+        public async Task CheckOffTask(int? id)
+        {
+            var task = await _repo.ToDoTask.FindTask(id);
+            if(task.TaskCompleted != true)
+            {
+                task.TaskCompleted = true;
+            }
+        }
+
         // GET: ToDoTasks/Create
         public async Task<IActionResult> Create()
         {
