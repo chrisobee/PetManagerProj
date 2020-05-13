@@ -32,7 +32,6 @@ namespace PetManager.Controllers
         public async Task<IActionResult> CheckOffTask(int id)
         {
             var task = await _repo.ToDoTask.FindTask(id);
-            task.TaskCompleted = true;
             task.ResetDay = DateTime.Today.Day;
             _repo.ToDoTask.EditTask(task);
             await _repo.Save();

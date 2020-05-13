@@ -18,11 +18,6 @@
                 <input asp-for="TaskName" class="form-control" />
                 <span asp-validation-for="TaskName" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="TaskCompleted" /> @Html.DisplayNameFor(model => model.TaskCompleted)
-                </label>
-            </div>
             <div class="form-group">
                 <label asp-for="SpecialInstructions" class="control-label"></label>
                 <input asp-for="SpecialInstructions" class="form-control" />

@@ -59,7 +59,7 @@ namespace PetManager.Controllers
         }
 
         //GET: PetOwners/Search
-        public async Task<IActionResult> Search()
+        public IActionResult Search()
         {
             return View();
         }
@@ -69,7 +69,36 @@ namespace PetManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Search(string email)
         {
+            var person = await _repo.PetOwner.FindOwnerByEmail(email);
+            if(person == null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("ConfirmContact");
+            }
+        }
 
+        //GET: PetOwners/ConfirmContact
+        public async Task<IActionResult> ConfirmContact(int petOwnerId)
+        {
+            var person = await _repo.PetOwner.FindOwnerWithId(petOwnerId);
+            return View(person);
+        }
+
+        //POST: PetOwners/ConfirmContact
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ConfirmContact(PetOwner owner)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentUser = await _repo.PetOwner.FindOwner(userId);
+            currentUser.Contacts = new List<PetOwner>(currentUser.Contacts) { owner }.ToArray();
+            _repo.PetOwner.EditPetOwner(currentUser);
+            await _repo.Save();
+
+            return RedirectToAction("Index");
         }
 
         public async Task<List<ToDoTask>> FindOwnersTasks(List<Pet> pets)
@@ -87,7 +116,7 @@ namespace PetManager.Controllers
             List<ToDoTask> filteredList = new List<ToDoTask>();
             foreach (ToDoTask task in allToDoTasks)
             {
-                if (task.TaskCompleted == false || task.ResetDay != DateTime.Today.Day)
+                if (task.ResetDay != DateTime.Today.Day)
                 {
                     filteredList.Add(task);
                 }
