@@ -29,11 +29,14 @@ namespace PetManager.Controllers
             return View(task);
         }
 
-        public async Task CheckOffTask(int? id)
+        public async Task<IActionResult> CheckOffTask(int id)
         {
             var task = await _repo.ToDoTask.FindTask(id);
             task.TaskCompleted = true;
-
+            task.ResetDay = DateTime.Today.Day;
+            _repo.ToDoTask.EditTask(task);
+            await _repo.Save();
+            return RedirectToAction("Index", "PetOwners");
         }
 
         // GET: ToDoTasks/Create

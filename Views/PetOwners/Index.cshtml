@@ -7,22 +7,6 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.PetOwner.FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PetOwner.LastName)
-            </th>
-        </tr>
-    </thead>
-
-</table>
 <div class="row">
     <div class="col-md-3">
         <table>
@@ -53,21 +37,23 @@
             </thead>
             @foreach(ToDoTask task in Model.CurrentUsersTasks)
             {
-                <tr>
-                    <td>@Html.DisplayFor(t => task.TaskName)</td>
-                    <td>
-                        @if (task.TaskCompleted == false)
-                        {
-                            <a class="btn btn-primary" asp-controller="ToDoTasksController" asp-action="CheckOffTask" asp-route-id="@task.TaskId">Check Off Task</a>
-                        }
-                        else
-                        {
-                            <a class="btn btn-secondary" asp-controller="ToDoTasksController" asp-action=""
-                        }
-                    </td>
-                </tr>
+        <tr>
+            @if (task.TaskCompleted == false || task.ResetDay != DateTime.Today.Day)
+            {
+                <td>@Html.DisplayFor(t => task.TaskName)</td>
+                <td>
+                    <a class="btn btn-primary" asp-controller="ToDoTasks" asp-action="CheckOffTask" asp-route-id="@task.TaskId">Check Off Task</a>
+                </td>
             }
-            <tr><a asp-controller="ToDoTasks" asp-action="Create">Add New Task</a></tr>
+            else
+            {
+                continue;
+            }
+        </tr>
+            }
+        <tr>
+            <td><a asp-controller="ToDoTasks" asp-action="Create">Add New Task</a></td>
+        </tr>
         </table>
     </div>
 </div>
