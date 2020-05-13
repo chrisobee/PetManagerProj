@@ -14,5 +14,6 @@ namespace PetManager.ViewModels
         public List<ToDoTask> CurrentUsersTasks { get; set; }
         public NearbyPlace NearbyVets { get; set; }
         public NearbyPlace NearbyPetStores { get; set; }
+        
     }
 }
