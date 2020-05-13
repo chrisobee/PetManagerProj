@@ -1,4 +1,5 @@
 ﻿using PetManager.Models;
+using PetManager.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,7 @@ namespace PetManager.ViewModels
         public PetOwner PetOwner { get; set; }
         public List<Pet> CurrentUsersPets { get; set; }
         public List<ToDoTask> CurrentUsersTasks { get; set; }
+        public List<NearbyPlace> NearbyVets { get; set; }
+        public List<NearbyPlace> NearbyPetStores { get; set; }
     }
 }
