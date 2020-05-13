@@ -36,5 +36,12 @@ namespace PetManager.Data
             var currentUser = results.Select(p => p.PetOwnerId).FirstOrDefault();
             return currentUser;
         }
+
+        public async Task<PetOwner> FindOwnerByEmail(string email)
+        {
+            var results = await FindByCondition(p => p.IdentityUser.Email == email);
+            var person = results.SingleOrDefault();
+            return person;
+        }
     }
 }

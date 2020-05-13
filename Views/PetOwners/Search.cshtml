@@ -1,0 +1,21 @@
+﻿@model PetManager.Models.PetOwner
+
+@{
+    ViewData["Title"] = "Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Search</h1>
+
+<form asp-action="Search" asp-route-email="email">
+    <div class="form-group">
+        <label class="control-label">Type in the email of the person you would like to search for</label>
+        <input name="email" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Search" class="btn btn-primary" />
+    </div>
+</form>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

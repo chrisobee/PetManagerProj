@@ -11,6 +11,7 @@ namespace PetManager.Contracts
         Task<PetOwner> FindOwner(string userId);
         Task<PetOwner> FindOwnerWithId(int? id);
         Task<int> FindOwnerId(string userId);
+        Task<PetOwner> FindOwnerByEmail(string email);
         void CreatePetOwner(PetOwner petOwner);
         void EditPetOwner(PetOwner petOwner);
         void DeletePetOwner(PetOwner petOwner);

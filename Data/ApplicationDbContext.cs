@@ -39,6 +39,7 @@ namespace PetManager.Data
                 .HasData(
                     new IdentityRole
                     {
+                        Id = "66d0c95c-c9b7-4471-bdee-3ff098b038a6",
                         Name = "Pet Owner",
                         NormalizedName = "PET OWNER"
                     }

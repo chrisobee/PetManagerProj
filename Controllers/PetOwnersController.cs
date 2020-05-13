@@ -68,6 +68,63 @@ namespace PetManager.Controllers
             return View(tasksAndPets);
         }
 
+        //GET: PetOwners/Search
+        public IActionResult Search()
+        {
+            return View();
+        }
+
+        //POST: PetOwners/Search/(email)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Search(string email)
+        {
+            var person = await _repo.PetOwner.FindOwnerByEmail(email);
+            if(person == null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("ContactDetails", "PetOwners", person);
+            }
+        }
+
+        //GET: PetOwners/ConfirmContact
+        public async Task<IActionResult> ContactDetails(PetOwner owner)
+        {
+            return View(owner);
+        }
+
+        //POST: PetOwners/ConfirmContact
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ConfirmContact(int id)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentUser = await _repo.PetOwner.FindOwner(userId);
+            var contactToAdd = await _repo.PetOwner.FindOwnerWithId(id);
+            currentUser.Contacts = AddContactToArray(currentUser.Contacts, contactToAdd);
+            _repo.PetOwner.EditPetOwner(currentUser);
+            await _repo.Save();
+
+            return RedirectToAction("Index");
+        }
+
+        public PetOwner[] AddContactToArray(PetOwner[] contacts, PetOwner contactToAdd)
+        {
+            if(contacts == null)
+            {
+                contacts = new PetOwner[] { contactToAdd};
+                return contacts;
+            }
+            else
+            {
+                contacts = new List<PetOwner>(contacts) { contactToAdd }.ToArray();
+                return contacts;
+            }
+        }
+
         public async Task<List<ToDoTask>> FindOwnersTasks(List<Pet> pets)
         {
             List<ToDoTask> tasks = new List<ToDoTask>();
@@ -83,7 +140,7 @@ namespace PetManager.Controllers
             List<ToDoTask> filteredList = new List<ToDoTask>();
             foreach (ToDoTask task in allToDoTasks)
             {
-                if (task.TaskCompleted == false || task.ResetDay != DateTime.Today.Day)
+                if (task.ResetDay != DateTime.Today.Day)
                 {
                     filteredList.Add(task);
                 }
