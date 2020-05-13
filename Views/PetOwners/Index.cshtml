@@ -1,7 +1,7 @@
 ﻿@model PetManager.ViewModels.TasksAndPetsVM
 
 @{
-    ViewData["Title"] = "Index";
+    ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -25,7 +25,7 @@
             }
             <tr><td><a asp-controller="Pets" asp-action="Create">Add New Pet</a></td></tr>
         </table>
-        
+
     </div>
     <div class="col-md-9" style="background-color:grey;">
         <table>
@@ -42,22 +42,53 @@
                     <td><a class="btn btn-primary" asp-controller="ToDoTasks" asp-action="CheckOffTask" asp-route-id="@task.TaskId">Check Off Task</a></td>
                 </tr>
             }
-        <tr>
-            <td><a asp-controller="ToDoTasks" asp-action="Create">Add New Task</a></td>
-        </tr>
+            <tr>
+                <td><a asp-controller="ToDoTasks" asp-action="Create">Add New Task</a></td>
+            </tr>
         </table>
-        <h3>Nearby Pet Stores</h3>
-        <div id="map" height="400px" width="100%"></div>
+    </div>
+</div>
+    <div>
+        
+        <div style="width:100%" class="row">
+            <div class="col-md-6">
+                <h3>Nearby Pet Stores</h3>
+                <div id="petMap" style="height:400px; width:100%"></div>
+            </div>
+            <div class="col-md-6">
+                <h3>Nearby Vets</h3>
+                <div id="vetMap" style="height:400px; width:100%"></div>
+            </div>
+        </div>
+    </div>
+        
         <script>
             var map;
             function initMap() {
-                map = new google.maps.Map(document.getElementById('map'), {
+                map = new google.maps.Map(document.getElementById('petMap'), {
                     center: { lat: @Model.PetOwner.Lat, lng: @Model.PetOwner.Lng},
-                    zoom: 10
+                    zoom: 11
                 });
-                @for (int i = 0; i < Model.NearbyPetStores.results.Length; i++){                                           
+                @for (int i = 0; i < Model.NearbyPetStores.results.Length; i++) {
                     double storeLat = @Model.NearbyPetStores.results[i].geometry.location.lat;
                     double storeLng = @Model.NearbyPetStores.results[i].geometry.location.lng;
+                    <text>
+                    var marker = new google.maps.Marker({
+                        position: { lat: @storeLat, lng: @storeLng },
+                        map: map
+                    });
+                    </text>
+                }
+                vetMap();
+            }
+            function vetMap() {
+                map = new google.maps.Map(document.getElementById('vetMap'), {
+                    center: { lat: @Model.PetOwner.Lat, lng: @Model.PetOwner.Lng},
+                    zoom: 11
+                });
+                @for (int i = 0; i < Model.NearbyVets.results.Length; i++) {
+                    double storeLat = @Model.NearbyVets.results[i].geometry.location.lat;
+                    double storeLng = @Model.NearbyVets.results[i].geometry.location.lng;
                     <text>
                     var marker = new google.maps.Marker({
                         position: { lat: @storeLat, lng: @storeLng },
@@ -68,5 +99,5 @@
             }
         </script>
         <script src="https://maps.googleapis.com/maps/api/js?key=@ViewBag.googleAPIKey&callback=initMap" async defer></script>
-    </div>
-</div>
+    
+

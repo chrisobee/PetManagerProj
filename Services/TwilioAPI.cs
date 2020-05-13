@@ -17,17 +17,32 @@ namespace PetManager.Services
                 
         public void SendSMSReminder(PetOwner petOwner, List<ToDoTask> toDoTasks)
         {
-            TwilioClient.Init(API_Key.twilioSID, API_Key.twilioAuthToken);
-            string toDoListText = null;
-            foreach (ToDoTask task in toDoTasks)
+            if (CheckForPhoneNumber(petOwner))
             {
-                toDoListText += $"\n -{task.TaskName}";
-            }                        
-            var message = MessageResource.Create(
-                from: new Twilio.Types.PhoneNumber($"+{API_Key.twilioPhoneNum}"),
-                body: $"Daily Reminder\nRemaining tasks:\n{toDoListText}",
-                to: new Twilio.Types.PhoneNumber($"+{petOwner.PhoneNumber}")
-            );
+                TwilioClient.Init(API_Key.twilioSID, API_Key.twilioAuthToken);
+                string toDoListText = null;
+                foreach (ToDoTask task in toDoTasks)
+                {
+                    toDoListText += $"\n -{task.TaskName}";
+                }
+                var message = MessageResource.Create(
+                    from: new Twilio.Types.PhoneNumber($"{API_Key.twilioPhoneNum}"),
+                    body: $"Daily Reminder\nRemaining tasks:\n{toDoListText}",
+                    to: new Twilio.Types.PhoneNumber($"{petOwner.PhoneNumber}")
+                );
+            }
+        }
+
+        public bool CheckForPhoneNumber(PetOwner petOwner)
+        {
+            if(petOwner.PhoneNumber == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 }
