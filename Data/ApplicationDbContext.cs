@@ -18,6 +18,7 @@ namespace PetManager.Data
         public DbSet<PetOwner> PetOwners { get; set; }
         public DbSet<Pet> Pets { get; set; }
         public DbSet<PetHumanJxn> PetOwnerships { get; set; }
+        public DbSet<ContactsJxn> Contacts { get; set; }
         public DbSet<AnimalType> AnimalTypes { get; set; }
         public DbSet<ToDoTask> Tasks { get; set; }
 

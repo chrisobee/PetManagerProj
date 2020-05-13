@@ -15,6 +15,12 @@
   <ItemGroup>
     <Compile Remove="Data\Migrations\20200513191347_RemovedUnnecessaryPropertyFromTaskTable.cs" />
     <Compile Remove="Data\Migrations\20200513191347_RemovedUnnecessaryPropertyFromTaskTable.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200513205806_AddedContactJxnTable.cs" />
+    <Compile Remove="Data\Migrations\20200513205806_AddedContactJxnTable.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200513205921_AddedContactsJxnTable.cs" />
+    <Compile Remove="Data\Migrations\20200513205921_AddedContactsJxnTable.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200513210504_AddedContactsJxnTable.cs" />
+    <Compile Remove="Data\Migrations\20200513210504_AddedContactsJxnTable.Designer.cs" />
   </ItemGroup>
 
 
