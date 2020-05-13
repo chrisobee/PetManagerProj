@@ -56,9 +56,14 @@
                 <tr>
                     <td>@Html.DisplayFor(t => task.TaskName)</td>
                     <td>
-                        <label class="form-check-label">
-                            <input id="taskCheck" class="form-check-input" asp-for="@task.TaskCompleted" /> @Html.DisplayNameFor(model => task.TaskCompleted)
-                        </label>
+                        @if (task.TaskCompleted == false)
+                        {
+                            <a class="btn btn-primary" asp-controller="ToDoTasksController" asp-action="CheckOffTask" asp-route-id="@task.TaskId">Check Off Task</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-secondary" asp-controller="ToDoTasksController" asp-action=""
+                        }
                     </td>
                 </tr>
             }
@@ -66,10 +71,3 @@
         </table>
     </div>
 </div>
-<script>
-    $(function () {
-        $('#taskCheck').change(function() {
-            @Url.Action("CheckOffTask","ToDoTasks", )
-        })
-    })
-</script>

@@ -32,10 +32,8 @@ namespace PetManager.Controllers
         public async Task CheckOffTask(int? id)
         {
             var task = await _repo.ToDoTask.FindTask(id);
-            if(task.TaskCompleted != true)
-            {
-                task.TaskCompleted = true;
-            }
+            task.TaskCompleted = true;
+
         }
 
         // GET: ToDoTasks/Create
