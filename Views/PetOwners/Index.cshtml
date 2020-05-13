@@ -47,7 +47,7 @@
         </tr>
         </table>
         <h3>Nearby Pet Stores</h3>
-        <div id="map" height="400px" width="100%"></div>
+        <div id="map" style="height: 400px; width: 100%"></div>
         <script>
             var map;
             function initMap() {
@@ -67,6 +67,6 @@
                 }
             }
         </script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=@ViewBag.googleAPIKey&callback=initMap" async defer></script>
+        <script src=("https://maps.googleapis.com/maps/api/js?key=@ViewBag.googleAPIKey&callback=initMap") async defer></script>
     </div>
 </div>
