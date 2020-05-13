@@ -76,7 +76,7 @@ namespace PetManager.Controllers
             }
             else
             {
-                return RedirectToAction("ConfirmContact");
+                return RedirectToAction("ConfirmContact", person.PetOwnerId);
             }
         }
 
