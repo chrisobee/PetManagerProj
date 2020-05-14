@@ -246,14 +246,11 @@ namespace PetManager.Controllers
         }
 
         // GET: PetOwners/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit()
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var petOwner = await _repo.PetOwner.FindOwner(userId);
 
-            var petOwner = await _repo.PetOwner.FindOwnerWithId(id);
             if (petOwner == null)
             {
                 return NotFound();
