@@ -73,7 +73,24 @@ namespace PetManager.Controllers
 
         public async Task<IActionResult> IndexForContact()
         {
+            //Get userId and instantiate View Model
+            TasksAndPetsVM tasksAndPets = new TasksAndPetsVM();
+            string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+            //Find owner and set property on View Model
+            var owner = await _repo.PetOwner.FindOwner(userId);
+            if (owner == null)
+            {
+                return RedirectToAction("Create");
+            }
+            tasksAndPets.PetOwner = owner;
+
+            //Find all of the owner's pets and set prop on View Model
+            var petIds = await _repo.PetOwnership.FindAllPets(owner.PetOwnerId);
+            tasksAndPets.CurrentUsersPets = await FindOwnersPets(petIds);
+            tasksAndPets.CurrentUsersPets = await SetPetsAnimalTypes(tasksAndPets.CurrentUsersPets);
+
+            return View(tasksAndPets);
         }
 
         public async Task<List<PetOwner>> GetContacts(int ownerId)
