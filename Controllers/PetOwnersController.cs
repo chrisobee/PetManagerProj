@@ -51,7 +51,7 @@ namespace PetManager.Controllers
             tasksAndPets.CurrentUsersTasks = FilterTasks(tasksAndPets.CurrentUsersTasks);
 
             //Find all contacts of user and set prop on View Model
-
+            tasksAndPets.Contacts = await GetContacts(owner.PetOwnerId);
             //Find pet stores
             tasksAndPets.NearbyPetStores = await ShowNearbyPetStores(owner.PetOwnerId);
 
@@ -73,7 +73,14 @@ namespace PetManager.Controllers
 
         public async Task<List<PetOwner>> GetContacts(int ownerId)
         {
+            List<PetOwner> contacts = new List<PetOwner>();
             var results = await _repo.ContactsJxn.CheckForContacts(ownerId);
+            foreach(int id in results)
+            {
+                PetOwner contact = await _repo.PetOwner.FindOwnerWithId(id);
+                contacts.Add(contact);
+            }
+            return contacts;
         }
 
         //GET: PetOwners/Search
