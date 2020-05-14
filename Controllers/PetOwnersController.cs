@@ -75,15 +75,14 @@ namespace PetManager.Controllers
         {
             //Get userId and instantiate View Model
             TasksAndPetsVM tasksAndPets = new TasksAndPetsVM();
+            ViewBag.contactId = contactId;
 
             //Find owner and set property on View Model
-            var owner = await _repo.PetOwner.FindOwnerWithId(contactId);
-            tasksAndPets.PetOwner = owner;
-            ViewBag.ContactName = owner.FirstName;
-
+            var contact = await _repo.PetOwner.FindOwnerWithId(contactId);
+            tasksAndPets.PetOwner = contact;
 
             //Find all of the owner's pets and set prop on View Model
-            var petIds = await _repo.PetOwnership.FindAllPets(owner.PetOwnerId);
+            var petIds = await _repo.PetOwnership.FindAllPets(contact.PetOwnerId);
             tasksAndPets.CurrentUsersPets = await FindOwnersPets(petIds);
             tasksAndPets.CurrentUsersPets = await SetPetsAnimalTypes(tasksAndPets.CurrentUsersPets);
 
@@ -188,7 +187,7 @@ namespace PetManager.Controllers
             foreach(int id in petIds)
             {
                 var results = await _repo.Pet.FindByCondition(p => p.PetId == id);
-                ownersPets.Add(results.FirstOrDefault());
+                ownersPets.Add(results.Include(p => p.AnimalType).FirstOrDefault());
             }
             return ownersPets;
         }

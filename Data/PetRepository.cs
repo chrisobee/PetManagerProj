@@ -1,4 +1,5 @@
-﻿using PetManager.Contracts;
+﻿using Microsoft.EntityFrameworkCore;
+using PetManager.Contracts;
 using PetManager.Models;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace PetManager.Data
         public async Task<Pet> GetPet(int? id)
         {
             var pet = await FindByCondition(p => p.PetId.Equals(id));
-            var SinglePet = pet.SingleOrDefault();
+            var SinglePet = pet.Include(p => p.AnimalType).SingleOrDefault();
             return SinglePet;
         }
         public void EditPet(Pet pet) => Update(pet);
