@@ -71,6 +71,12 @@ namespace PetManager.Controllers
             return View(tasksAndPets);
         }
 
+<<<<<<< HEAD
+        //public async Task<IActionResult> IndexForContact()
+        //{
+
+        //}
+=======
         public async Task<IActionResult> IndexForContact(int contactId)
         {
             //Get userId and instantiate View Model
@@ -92,6 +98,7 @@ namespace PetManager.Controllers
 
             return View(tasksAndPets);
         }
+>>>>>>> db79e2a7e5097f43f319f57f9cbe05fa600f687f
 
         public async Task<List<PetOwner>> GetContacts(int ownerId)
         {

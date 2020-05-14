@@ -44,6 +44,12 @@ namespace PetManager.Controllers
             AnimalType animalType = await _repo.AnimalType.GetAnimalTypeById(pet.AnimalTypeId);
             petsAndAnimalTypeVM.AnimalTypes = new List<AnimalType>();
             petsAndAnimalTypeVM.AnimalTypes.Add(animalType);
+            petsAndAnimalTypeVM.PetsTasks = new List<ToDoTask>();
+            var PetTasks = await _repo.ToDoTask.GetTasksByPet(pet.PetId);
+            foreach (ToDoTask task in PetTasks) 
+            {
+                petsAndAnimalTypeVM.PetsTasks.Add(task);
+            }             
             return View(petsAndAnimalTypeVM);
         }
 
@@ -188,7 +194,7 @@ namespace PetManager.Controllers
             var pet = await _repo.Pet.GetPet(id);
             _repo.Pet.DeletePet(pet);
             await _repo.Save();
-            return RedirectToAction("index");
+            return RedirectToAction("index", "PetOwners");
         }
 
         private bool PetExists(int id)

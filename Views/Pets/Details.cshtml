@@ -31,6 +31,14 @@
     </dl>
 </div>
 <div>
+    <dl>To Do Tasks</dl>
+    @foreach (ToDoTask task in Model.PetsTasks)
+    {
+        <dd><a asp-action="Edit" asp-controller="ToDoTasks" asp-route-id="@task.TaskId">@task.TaskName</a></dd>
+    }
+</div>
+<div>
     <a asp-action="Edit" asp-route-id="@Model.Pet.PetId">Edit</a> |
+    <a asp-action="Delete" asp-route-id="@Model.Pet.PetId">Remove Pet</a> |
     <a asp-action="Index" asp-controller="PetOwners">Back to Home</a>
 </div>
