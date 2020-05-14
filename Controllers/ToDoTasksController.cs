@@ -89,9 +89,10 @@ namespace PetManager.Controllers
             }
             //Find all pets so user can choose the pet that this task targets
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            int ownerId = await _repo.PetOwner.FindOwnerId(userId);
+            var ownerId = await _repo.PetOwner.FindOwnerId(userId);
             List<int> petIds = await _repo.PetOwnership.FindAllPets(ownerId);
-            ViewBag.Pets = await GetPetsFromIds(petIds);
+            List<Pet> pets = await GetPetsFromIds(petIds);
+            ViewBag.Pets = pets;
 
             var toDoTask = await _repo.ToDoTask.FindTask(id);
             if (toDoTask == null)

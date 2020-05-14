@@ -23,7 +23,7 @@ namespace PetManager.Data
             Create(ownership);
         }
 
-        public async Task<List<int>> FindAllPets(int petOwnerId)
+        public async Task<List<int>> FindAllPets(int? petOwnerId)
         {
             var results = await FindByCondition(p => p.PetOwnerId == petOwnerId);
             var pets = results.Select(p => p.PetId).ToList();

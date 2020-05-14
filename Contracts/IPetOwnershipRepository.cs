@@ -9,6 +9,6 @@ namespace PetManager.Contracts
     public interface IPetOwnershipRepository : IRepositoryBase<PetHumanJxn>
     {
         void Create(int petOwnerId, int petId);
-        Task<List<int>> FindAllPets(int petOwnerId);
+        Task<List<int>> FindAllPets(int? petOwnerId);
     }
 }
