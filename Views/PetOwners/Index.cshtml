@@ -38,7 +38,7 @@
             @foreach (ToDoTask task in Model.CurrentUsersTasks)
             {
                 <tr>
-                    <td>@task.TaskName</td>
+                    <td><a asp-controller="ToDoTasks" asp-action="Edit" asp-route-id="@task.TaskId">@task.TaskName</a></td>
                     <td><a class="btn btn-primary" asp-controller="ToDoTasks" asp-action="CheckOffTask" asp-route-id="@task.TaskId">Check Off Task</a></td>
                 </tr>
             }
