@@ -88,12 +88,13 @@ namespace PetManager.Controllers
             }
             else
             {
-                return RedirectToAction("ContactDetails", "PetOwners", person);
+                return RedirectToAction("ConfirmContact", "PetOwners", person);
             }
         }
 
         //GET: PetOwners/ConfirmContact
-        public async Task<IActionResult> ContactDetails(PetOwner owner)
+        [HttpGet]
+        public IActionResult ConfirmContact(PetOwner owner)
         {
             return View(owner);
         }
@@ -101,30 +102,24 @@ namespace PetManager.Controllers
         //POST: PetOwners/ConfirmContact
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ConfirmContact(int id)
+        public async Task<IActionResult> ConfirmContact(int? contactId)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var currentUser = await _repo.PetOwner.FindOwner(userId);
-            var contactToAdd = await _repo.PetOwner.FindOwnerWithId(id);
-            currentUser.Contacts = AddContactToArray(currentUser.Contacts, contactToAdd);
-            _repo.PetOwner.EditPetOwner(currentUser);
+            var ownerId = await _repo.PetOwner.FindOwnerId(userId);
+            List<int?> contacts = await CheckForContacts(ownerId);
+            if (contacts.Contains(contactId))
+            {
+                return RedirectToAction("Search");
+            }
+            _repo.ContactsJxn.AddContact(ownerId, contactId);
             await _repo.Save();
-
             return RedirectToAction("Index");
         }
 
-        public PetOwner[] AddContactToArray(PetOwner[] contacts, PetOwner contactToAdd)
+        public async Task<List<int?>> CheckForContacts(int ownerId)
         {
-            if(contacts == null)
-            {
-                contacts = new PetOwner[] { contactToAdd};
-                return contacts;
-            }
-            else
-            {
-                contacts = new List<PetOwner>(contacts) { contactToAdd }.ToArray();
-                return contacts;
-            }
+            List<int?> contacts = await _repo.ContactsJxn.CheckForContacts(ownerId);
+            return contacts;
         }
 
         public async Task<List<ToDoTask>> FindOwnersTasks(List<Pet> pets)

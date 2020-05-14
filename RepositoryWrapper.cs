@@ -15,6 +15,7 @@ namespace PetManager
         private IToDoTasksRepository _toDoTask;
         private IPetOwnershipRepository _petOwnership;
         private IAnimalTypeRepository _animalType;
+        private IContactsJxnRepository _contacts;
         public IPetRepository Pet
         {
             get
@@ -68,6 +69,17 @@ namespace PetManager
                     _animalType = new AnimalTypeRepository(_context);
                 }
                 return _animalType;
+            }
+        }
+        public IContactsJxnRepository ContactsJxn
+        {
+            get
+            {
+                if(_contacts == null)
+                {
+                    _contacts = new ContactsJxnRepository(_context);
+                }
+                return _contacts;
             }
         }
         public RepositoryWrapper(ApplicationDbContext context)

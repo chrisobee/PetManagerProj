@@ -1,7 +1,7 @@
 ﻿@model PetManager.Models.ToDoTask
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewBag.Title = "Edit";
 }
 
 <h1>Edit</h1>
@@ -14,18 +14,18 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="TaskId" />
             <div class="form-group">
-                <label asp-for="TaskName" class="control-label"></label>
+                <label asp-for="TaskName" class="control-label">Task Name</label>
                 <input asp-for="TaskName" class="form-control" />
                 <span asp-validation-for="TaskName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SpecialInstructions" class="control-label"></label>
+                <label asp-for="SpecialInstructions" class="control-label">Special Instructions</label>
                 <input asp-for="SpecialInstructions" class="form-control" />
                 <span asp-validation-for="SpecialInstructions" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PetId" class="control-label"></label>
-                <select asp-for="PetId" class="form-control" asp-items="ViewBag.PetId"></select>
+                <label asp-for="PetId" class="control-label">Pets</label>
+                <select asp-for="PetId" class="form-control" asp-items="@(new SelectList(ViewBag.Pets, "PetId", "Name"))"></select>
                 <span asp-validation-for="PetId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -36,7 +36,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="PetOwners" asp-action="Index">Back to Index</a>
 </div>
 
 @section Scripts {
