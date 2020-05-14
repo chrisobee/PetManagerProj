@@ -27,8 +27,14 @@
         </table>
         <table>
             <thead>
-                <tr></tr>
+                <tr>Contacts:</tr>
             </thead>
+            @foreach(PetOwner contact in Model.Contacts)
+            {
+                <tr>
+                    <td><a asp-action="" ></a></td>
+                </tr>
+            }
         </table>
 
     </div>

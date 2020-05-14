@@ -1,4 +1,5 @@
-﻿using PetManager.Contracts;
+﻿using Microsoft.EntityFrameworkCore;
+using PetManager.Contracts;
 using PetManager.Models;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ namespace PetManager.Data
         public async Task<IEnumerable<ToDoTask>> GetTasksByPet(int? petId)
         {
             var results = await FindByCondition(t => t.PetId == petId);
-            var tasks = results.ToList();
+            var tasks = results.Include(t => t.Pet).ToList();
             return tasks;
         }
     }

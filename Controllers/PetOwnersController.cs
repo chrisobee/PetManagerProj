@@ -54,7 +54,7 @@ namespace PetManager.Controllers
             tasksAndPets.Contacts = await GetContacts(owner.PetOwnerId);
             //Find pet stores
             tasksAndPets.NearbyPetStores = await ShowNearbyPetStores(owner.PetOwnerId);
-
+            
             //Find vets
             tasksAndPets.NearbyVets = await ShowNearbyVets(owner.PetOwnerId);
 
@@ -69,6 +69,11 @@ namespace PetManager.Controllers
 
             ViewBag.googleAPIKey = API_Key.googleAPIKey;
             return View(tasksAndPets);
+        }
+
+        public async Task<IActionResult> IndexForContact()
+        {
+
         }
 
         public async Task<List<PetOwner>> GetContacts(int ownerId)
@@ -145,6 +150,7 @@ namespace PetManager.Controllers
             }
             return tasks;
         }
+
         public List<ToDoTask> FilterTasks(List<ToDoTask> allToDoTasks)
         {
             List<ToDoTask> filteredList = new List<ToDoTask>();
@@ -157,6 +163,7 @@ namespace PetManager.Controllers
             }
             return filteredList;
         }
+
         public async Task<List<Pet>> FindOwnersPets(List<int> petIds)
         {
             List<Pet> ownersPets = new List<Pet>();
@@ -315,9 +322,6 @@ namespace PetManager.Controllers
             return nearbyStores;
         }
 
-        
-
-        
         private bool PetOwnerExists(int id)
         {
             try
