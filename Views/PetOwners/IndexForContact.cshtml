@@ -1,0 +1,49 @@
+﻿@model PetManager.ViewModels.TasksAndPetsVM
+
+@{
+    ViewBag.Title = "IndexForContact";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewBag.ContactName's Index</h1>
+<hr />
+<div class="row">
+    <div style="border-color:pink; border-width:thick;" class="col-md-3">
+        <table>
+            <thead>
+                <tr>
+                    <th>Pet Name</th>
+                    <th>Animal Type</th>
+                </tr>
+            </thead>
+            @foreach (Pet pet in Model.CurrentUsersPets)
+            {
+                <tr>
+                    <td><a asp-controller="Pets" asp-action="Details" asp-route-id="@pet.PetId">@pet.Name</a></td>
+                    <td>@pet.AnimalType.Name</td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="col-md-9" style="background-color:grey;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Task Name</th>
+                    <th>Task Completed</th>
+                </tr>
+            </thead>
+            @foreach (ToDoTask task in Model.CurrentUsersTasks)
+            {
+                <tr>
+                    <td><a asp-controller="ToDoTasks" asp-action="Details" asp-route-taskId="@task.TaskId">@task.TaskName</a></td>
+                    <td><a class="btn btn-primary" asp-controller="ToDoTasks" asp-action="CheckOffTask" asp-route-id="@task.TaskId">Check Off Task</a></td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+
+
+
+

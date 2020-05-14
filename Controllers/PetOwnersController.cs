@@ -71,10 +71,35 @@ namespace PetManager.Controllers
             return View(tasksAndPets);
         }
 
+<<<<<<< HEAD
         //public async Task<IActionResult> IndexForContact()
         //{
 
         //}
+=======
+        public async Task<IActionResult> IndexForContact(int contactId)
+        {
+            //Get userId and instantiate View Model
+            TasksAndPetsVM tasksAndPets = new TasksAndPetsVM();
+
+            //Find owner and set property on View Model
+            var owner = await _repo.PetOwner.FindOwnerWithId(contactId);
+            tasksAndPets.PetOwner = owner;
+            ViewBag.ContactName = owner.FirstName;
+
+
+            //Find all of the owner's pets and set prop on View Model
+            var petIds = await _repo.PetOwnership.FindAllPets(owner.PetOwnerId);
+            tasksAndPets.CurrentUsersPets = await FindOwnersPets(petIds);
+            tasksAndPets.CurrentUsersPets = await SetPetsAnimalTypes(tasksAndPets.CurrentUsersPets);
+
+            //Find all tasks and set prop on View Model
+            tasksAndPets.CurrentUsersTasks = await FindOwnersTasks(tasksAndPets.CurrentUsersPets);
+            tasksAndPets.CurrentUsersTasks = FilterTasks(tasksAndPets.CurrentUsersTasks);
+
+            return View(tasksAndPets);
+        }
+>>>>>>> db79e2a7e5097f43f319f57f9cbe05fa600f687f
 
         public async Task<List<PetOwner>> GetContacts(int ownerId)
         {
@@ -228,14 +253,11 @@ namespace PetManager.Controllers
         }
 
         // GET: PetOwners/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit()
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var petOwner = await _repo.PetOwner.FindOwner(userId);
 
-            var petOwner = await _repo.PetOwner.FindOwnerWithId(id);
             if (petOwner == null)
             {
                 return NotFound();
