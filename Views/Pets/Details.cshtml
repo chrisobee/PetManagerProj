@@ -1,4 +1,4 @@
-﻿@model PetManager.Models.Pet
+﻿@model PetManager.ViewModels.PetsAndAnimalTypeVM
 
 @{
     ViewData["Title"] = "Details";
@@ -11,26 +11,26 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.Pet.Name)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.Pet.Name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Age)
+            @Html.DisplayNameFor(model => model.Pet.Age)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Age)
+            @Html.DisplayFor(model => model.Pet.Age)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AnimalType)
+            Animal Type
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AnimalType.AnimalTypeId)
+            @Html.DisplayFor(model => model.AnimalTypes[0].Name)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.PetId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Pet.PetId">Edit</a> |
+    <a asp-action="Index" asp-controller="PetOwners">Back to Home</a>
 </div>

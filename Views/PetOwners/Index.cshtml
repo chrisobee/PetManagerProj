@@ -19,7 +19,11 @@
             @foreach (Pet pet in Model.CurrentUsersPets)
             {
                 <tr>
+<<<<<<< HEAD
                     <td style="background-color: none">@pet.Name</td>
+=======
+                    <td><a asp-controller="Pets" asp-action="Details" asp-route-id="@pet.PetId">@pet.Name</a></td>
+>>>>>>> 0a49268feee056947e25fbf673eda12d6c89969f
                     <td>@pet.AnimalType.Name</td>
                 </tr>
             }
@@ -66,7 +70,7 @@
             </div>
         </div>
     </div>
-        
+
         <script>
             var map;
             function initMap() {
@@ -103,6 +107,6 @@
                 }
             }
         </script>
+
         <script src="https://maps.googleapis.com/maps/api/js?key=@ViewBag.googleAPIKey&callback=initMap" async defer></script>
-    
 

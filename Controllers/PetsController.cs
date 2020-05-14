@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using PetManager.Contracts;
 using PetManager.Data;
@@ -26,19 +27,24 @@ namespace PetManager.Controllers
         // GET: Pets/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            PetsAndAnimalTypeVM petsAndAnimalTypeVM = new PetsAndAnimalTypeVM();
             if (id == null)
             {
                 return NotFound();
             }
 
             var pet = await _repo.Pet.GetPet(id);
-            
+
             if (pet == null)
             {
                 return NotFound();
             }
-
-            return View(pet);
+            petsAndAnimalTypeVM.Pet = pet;
+            
+            AnimalType animalType = await _repo.AnimalType.GetAnimalTypeById(pet.AnimalTypeId);
+            petsAndAnimalTypeVM.AnimalTypes = new List<AnimalType>();
+            petsAndAnimalTypeVM.AnimalTypes.Add(animalType);
+            return View(petsAndAnimalTypeVM);
         }
 
         // GET: Pets/Create
@@ -120,8 +126,8 @@ namespace PetManager.Controllers
                 try
                 {
                     _repo.Pet.EditPet(pet);
-                    await _repo.Save();
-                    return RedirectToAction("index");
+                    await _repo.Save();                   
+                    return RedirectToAction("Details", new { id = pet.PetId });
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -152,7 +158,7 @@ namespace PetManager.Controllers
             {
                 return NotFound();
             }
-
+            
             return View(pet);
         }
 

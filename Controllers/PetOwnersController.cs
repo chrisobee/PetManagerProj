@@ -63,6 +63,8 @@ namespace PetManager.Controllers
             {
                 _twilioAPI.SendSMSReminder(owner, tasksAndPets.CurrentUsersTasks);
                 owner.ResetDay = DateTime.Now.Day;
+                _repo.PetOwner.EditPetOwner(owner);
+                await _repo.Save();
             }
 
             ViewBag.googleAPIKey = API_Key.googleAPIKey;
