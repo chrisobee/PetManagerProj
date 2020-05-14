@@ -13,6 +13,7 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="TaskId" />
+            <input type="hidden" asp-for="ResetDay" />
             <div class="form-group">
                 <label asp-for="TaskName" class="control-label">Task Name</label>
                 <input asp-for="TaskName" class="form-control" />

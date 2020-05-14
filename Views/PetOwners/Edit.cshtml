@@ -13,6 +13,7 @@
     <div class="col-md-4">
         <form asp-action="Edit" asp-route-id="@Model.PetOwnerId">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
             <input type="hidden" asp-for="PetOwnerId" />
             <input type="hidden" asp-for="IdentityUserId" />
             <input type="hidden" asp-for="Lat" />

@@ -1,0 +1,37 @@
+﻿@model PetManager.Models.Pet
+
+@{
+    ViewData["Title"] = "ContactDetails";
+    ViewBag.Title = "ContactDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>ContactDetails</h1>
+
+<div>
+    <h4>Pet</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Pet Name
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            Age
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Age)
+        </dd>
+        <dt class = "col-sm-2">
+            Animal Type
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AnimalType.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-controller="PetOwners" asp-action="IndexForContact" asp-route-contactId="@ViewBag.contactId">Back to List</a>
+</div>
