@@ -10,5 +10,6 @@ namespace PetManager.ViewModels
     {
         public List<AnimalType> AnimalTypes { get; set; }
         public Pet Pet { get; set; }
+        public List<ToDoTask> PetsTasks { get; set; }
     }
 }

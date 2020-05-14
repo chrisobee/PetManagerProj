@@ -71,10 +71,10 @@ namespace PetManager.Controllers
             return View(tasksAndPets);
         }
 
-        public async Task<IActionResult> IndexForContact()
-        {
+        //public async Task<IActionResult> IndexForContact()
+        //{
 
-        }
+        //}
 
         public async Task<List<PetOwner>> GetContacts(int ownerId)
         {

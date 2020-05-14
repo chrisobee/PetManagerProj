@@ -44,6 +44,12 @@ namespace PetManager.Controllers
             AnimalType animalType = await _repo.AnimalType.GetAnimalTypeById(pet.AnimalTypeId);
             petsAndAnimalTypeVM.AnimalTypes = new List<AnimalType>();
             petsAndAnimalTypeVM.AnimalTypes.Add(animalType);
+            petsAndAnimalTypeVM.PetsTasks = new List<ToDoTask>();
+            var PetTasks = await _repo.ToDoTask.GetTasksByPet(pet.PetId);
+            foreach (ToDoTask task in PetTasks) 
+            {
+                petsAndAnimalTypeVM.PetsTasks.Add(task);
+            }             
             return View(petsAndAnimalTypeVM);
         }
 
