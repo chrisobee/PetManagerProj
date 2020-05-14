@@ -53,9 +53,8 @@ namespace PetManager.Controllers
             return View(petsAndAnimalTypeVM);
         }
 
-        public async Task<IActionResult> ContactDetails(int? id, int contactId)
+        public async Task<IActionResult> ContactPetDetails(int? id, int contactId)
         {
-            PetsAndAnimalTypeVM petsAndAnimalTypeVM = new PetsAndAnimalTypeVM();
             ViewBag.contactId = contactId;
             if (id == null)
             {

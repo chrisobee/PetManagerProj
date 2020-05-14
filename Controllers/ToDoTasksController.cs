@@ -31,6 +31,13 @@ namespace PetManager.Controllers
             return View(task);
         }
 
+        public async Task<IActionResult> ContactTaskDetails(int taskId, int contactId)
+        {
+            var task = await _repo.ToDoTask.FindTask(taskId);
+            ViewBag.contactId = contactId;
+            return View(task);
+        }
+
         public async Task<IActionResult> CheckOffTask(int id)
         {
             var task = await _repo.ToDoTask.FindTask(id);
