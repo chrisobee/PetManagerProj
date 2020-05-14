@@ -87,6 +87,11 @@ namespace PetManager.Controllers
             {
                 return NotFound();
             }
+            //Find all pets so user can choose the pet that this task targets
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            int ownerId = await _repo.PetOwner.FindOwnerId(userId);
+            List<int> petIds = await _repo.PetOwnership.FindAllPets(ownerId);
+            ViewBag.Pets = await GetPetsFromIds(petIds);
 
             var toDoTask = await _repo.ToDoTask.FindTask(id);
             if (toDoTask == null)
@@ -129,6 +134,17 @@ namespace PetManager.Controllers
                 return RedirectToAction("Index", "PetOwners");
             }
             return View(toDoTask);
+        }
+
+        public async Task<List<Pet>> GetPetsFromIds(List<int> petIds)
+        {
+            List<Pet> pets = new List<Pet>();
+            foreach(int id in petIds)
+            {
+                var pet = await _repo.Pet.GetPet(id);
+                pets.Add(pet);
+            }
+            return pets;
         }
 
         // GET: ToDoTasks/Delete/5

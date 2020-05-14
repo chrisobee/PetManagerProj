@@ -20,7 +20,6 @@ namespace PetManager.Data
             var SinglePet = pet.SingleOrDefault();
             return SinglePet;
         }
-            
         public void EditPet(Pet pet) => Update(pet);
         public void DeletePet(Pet pet) => Delete(pet);
 
