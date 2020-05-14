@@ -10,35 +10,42 @@
     <h4>Pet</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Pet.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Pet.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Pet.Age)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Pet.Age)
-        </dd>
-        <dt class = "col-sm-2">
-            Animal Type
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AnimalTypes[0].Name)
-        </dd>
-    </dl>
-</div>
+        <div class="col-md-2">
+            <div>
+                <th>@Html.DisplayNameFor(model => model.Pet.Name)</th>                
+            </div>
+            <div>
+                <th>@Html.DisplayNameFor(model => model.Pet.Age)</th>                
+            </div>
+            <div>
+                <th>Animal Type</th>                
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div>
+                <th>@Html.DisplayFor(model => model.Pet.Name)</th>
+            </div>
+            <div>
+                <th>@Html.DisplayFor(model => model.Pet.Age)</th>
+            </div>
+            <div>
+                <th>@Html.DisplayFor(model => model.AnimalTypes[0].Name)</th>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div>
+                <dl>To Do Tasks for @Model.Pet.Name</dl>
+                @foreach (ToDoTask task in Model.PetsTasks)
+                {
+                    <dd><a asp-action="Edit" asp-controller="ToDoTasks" asp-route-id="@task.TaskId">@task.TaskName</a></dd>
+                }
+            </div>
+        </div>
+     </dl>
+    
+<hr />
 <div>
-    <dl>To Do Tasks</dl>
-    @foreach (ToDoTask task in Model.PetsTasks)
-    {
-        <dd><a asp-action="Edit" asp-controller="ToDoTasks" asp-route-id="@task.TaskId">@task.TaskName</a></dd>
-    }
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Pet.PetId">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.Pet.PetId">Edit @Model.Pet.Name</a> |
     <a asp-action="Delete" asp-route-id="@Model.Pet.PetId">Remove Pet</a> |
     <a asp-action="Index" asp-controller="PetOwners">Back to Home</a>
 </div>
