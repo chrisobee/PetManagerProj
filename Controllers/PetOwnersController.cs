@@ -44,12 +44,13 @@ namespace PetManager.Controllers
             //Find all of the owner's pets and set prop on View Model
             var petIds = await _repo.PetOwnership.FindAllPets(owner.PetOwnerId);
             tasksAndPets.CurrentUsersPets = await FindOwnersPets(petIds);
-
             tasksAndPets.CurrentUsersPets = await SetPetsAnimalTypes(tasksAndPets.CurrentUsersPets);
 
             //Find all tasks and set prop on View Model
             tasksAndPets.CurrentUsersTasks = await FindOwnersTasks(tasksAndPets.CurrentUsersPets);
             tasksAndPets.CurrentUsersTasks = FilterTasks(tasksAndPets.CurrentUsersTasks);
+
+            //Find all contacts of user and set prop on View Model
 
             //Find pet stores
             tasksAndPets.NearbyPetStores = await ShowNearbyPetStores(owner.PetOwnerId);
@@ -66,6 +67,11 @@ namespace PetManager.Controllers
 
             ViewBag.googleAPIKey = API_Key.googleAPIKey;
             return View(tasksAndPets);
+        }
+
+        public async Task<List<PetOwner>> GetContacts(int ownerId)
+        {
+            var results = await _repo.ContactsJxn.CheckForContacts(ownerId);
         }
 
         //GET: PetOwners/Search

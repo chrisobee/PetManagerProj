@@ -9,6 +9,7 @@ namespace PetManager.ViewModels
     public class PetsAndAnimalTypeVM
     {
         public List<AnimalType> AnimalTypes { get; set; }
+        public List<PetOwner> Contacts { get; set; }
         public Pet Pet { get; set; }
     }
 }

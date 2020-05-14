@@ -8,7 +8,7 @@
 <h1>Index</h1>
 <hr />
 <div class="row">
-    <div style="border-color:pink; border-width:5px;" class="col-md-3">
+    <div style="border-color:pink; border-width:thick;" class="col-md-3">
         <table>
             <thead>
                 <tr>
@@ -19,11 +19,16 @@
             @foreach (Pet pet in Model.CurrentUsersPets)
             {
                 <tr>
-                    <td>@pet.Name</td>
+                    <td style="background-color: none">@pet.Name</td>
                     <td>@pet.AnimalType.Name</td>
                 </tr>
             }
             <tr><td><a asp-controller="Pets" asp-action="Create">Add New Pet</a></td></tr>
+        </table>
+        <table>
+            <thead>
+                <tr></tr>
+            </thead>
         </table>
 
     </div>
