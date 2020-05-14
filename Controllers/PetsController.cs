@@ -176,7 +176,7 @@ namespace PetManager.Controllers
             var pet = await _repo.Pet.GetPet(id);
             _repo.Pet.DeletePet(pet);
             await _repo.Save();
-            return RedirectToAction("index");
+            return RedirectToAction("index", "PetOwners");
         }
 
         private bool PetExists(int id)
