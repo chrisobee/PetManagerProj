@@ -25,6 +25,7 @@
             }
             <tr><td><a asp-controller="Pets" asp-action="Create">Add New Pet</a></td></tr>
         </table>
+        <hr />
         <table>
             <thead>
                 <tr>Contacts:</tr>
@@ -32,7 +33,7 @@
             @foreach(PetOwner contact in Model.Contacts)
             {
                 <tr>
-                    <td><a asp-action="" ></a></td>
+                    <td><a asp-action="IndexForContact" asp-route-contactId="@contact.PetOwnerId">@contact.FirstName  @contact.LastName</a></td>
                 </tr>
             }
         </table>
