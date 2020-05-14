@@ -23,9 +23,11 @@ namespace PetManager.Controllers
         }
         
         //GET: ToDoTasks/Details
-        public async Task<IActionResult> Details(int taskId)
+        public async Task<IActionResult> Details(int? taskId)
         {
             var task = await _repo.ToDoTask.FindTask(taskId);
+            var pet = await _repo.Pet.GetPet(task.PetId);
+            ViewBag.Pet = pet.Name;
             return View(task);
         }
 
