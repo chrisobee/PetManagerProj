@@ -31,10 +31,33 @@ namespace PetManager.Controllers
             return View(task);
         }
 
+        public async Task<IActionResult> ContactTaskDetails(int taskId, int contactId)
+        {
+            var task = await _repo.ToDoTask.FindTask(taskId);
+            ViewBag.contactId = contactId;
+            return View(task);
+        }
+
         public async Task<IActionResult> CheckOffTask(int id)
         {
             var task = await _repo.ToDoTask.FindTask(id);
-            task.ResetDay = DateTime.Today.Day;
+            switch (task.Frequency.Interval)
+            {
+                case "Daily":
+                    task.ResetDay = DateTime.Today.Date;
+                    break;
+                case "Weekly":
+                    TimeSpan weekly = new TimeSpan(5, 0, 0, 0);
+                    task.ResetDay = DateTime.Today.Date + weekly;
+                    break;
+                case "Monthly":
+                    TimeSpan monthly = new TimeSpan(19, 0, 0, 0);
+                    task.ResetDay = DateTime.Today.Date + monthly;
+                    break;
+                default:
+                    task.ResetDay = DateTime.Today.Date;
+                    break;
+            }
             _repo.ToDoTask.EditTask(task);
             await _repo.Save();
             return RedirectToAction("Index", "PetOwners");
@@ -51,7 +74,8 @@ namespace PetManager.Controllers
             TaskWithAllCurrentPets task = new TaskWithAllCurrentPets()
             {
                 Task = new ToDoTask(),
-                CurrentPets = await FindOwnersPets(petIds)
+                CurrentPets = await FindOwnersPets(petIds),
+                AllFrequencies = await _repo.Frequency.GetFrequencies()
             };
             return View(task);
         }
@@ -75,6 +99,8 @@ namespace PetManager.Controllers
         {
             if (ModelState.IsValid)
             {
+                TimeSpan defaultTime = new TimeSpan(1, 0, 0, 0);
+                toDoTask.Task.ResetDay = DateTime.Today.Date - defaultTime;
                 _repo.ToDoTask.CreateTask(toDoTask.Task);
                 await _repo.Save();
                 return RedirectToAction("Index", "PetOwners");
@@ -92,9 +118,15 @@ namespace PetManager.Controllers
             //Find all pets so user can choose the pet that this task targets
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var ownerId = await _repo.PetOwner.FindOwnerId(userId);
+
+            //Get all pets and places it in viewbag
             List<int> petIds = await _repo.PetOwnership.FindAllPets(ownerId);
             List<Pet> pets = await GetPetsFromIds(petIds);
             ViewBag.Pets = pets;
+
+            //Get all frequencies and places them in viewbag
+            List<Frequency> frequencies = await _repo.Frequency.GetFrequencies();
+            ViewBag.Frequencies = frequencies;
 
             var toDoTask = await _repo.ToDoTask.FindTask(id);
             if (toDoTask == null)

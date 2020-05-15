@@ -1,0 +1,37 @@
+﻿@model PetManager.Models.ToDoTask
+
+@{
+    ViewData["Title"] = "ContactTaskDetails";
+    ViewBag.Title = "ContactTaskDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>ContactTaskDetails</h1>
+
+<div>
+    <h4>ToDoTask</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Task Name
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TaskName)
+        </dd>
+        <dt class = "col-sm-2">
+            Special Instructions
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SpecialInstructions)
+        </dd>
+        <dt class = "col-sm-2">
+            Task For:
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Pet.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-controller="PetOwners" asp-action="IndexForContact" asp-route-contactId ="@ViewBag.contactId">Back to List</a>
+</div>

@@ -10,18 +10,22 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Task.TaskName" class="control-label"></label>
+                <label asp-for="Task.TaskName" class="control-label">Task Name</label>
                 <input asp-for="Task.TaskName" class="form-control" />
                 <span asp-validation-for="Task.TaskName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Task.SpecialInstructions" class="control-label"></label>
+                <label asp-for="Task.SpecialInstructions" class="control-label">Special Instructions</label>
                 <input asp-for="Task.SpecialInstructions" class="form-control" />
                 <span asp-validation-for="Task.SpecialInstructions" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Task.PetId" class="control-label"></label>
+                <label asp-for="Task.PetId" class="control-label">Pets</label>
                 <select asp-for="Task.PetId" class ="form-control" asp-items="@(new SelectList(Model.CurrentPets,"PetId", "Name"))"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Task.FrequencyId" class="control-label">Frequency</label>
+                <select asp-for="Task.FrequencyId" class="form-control" asp-items="@(new SelectList(Model.AllFrequencies,"FrequencyId", "Interval"))"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -31,7 +35,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="PetOwners" asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
