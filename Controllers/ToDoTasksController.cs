@@ -41,7 +41,23 @@ namespace PetManager.Controllers
         public async Task<IActionResult> CheckOffTask(int id)
         {
             var task = await _repo.ToDoTask.FindTask(id);
-            task.ResetDay = DateTime.Today.Day;
+            switch (task.Frequency.Interval)
+            {
+                case "Daily":
+                    task.ResetDay = DateTime.Today.Date;
+                    break;
+                case "Weekly":
+                    TimeSpan weekly = new TimeSpan(5, 0, 0, 0);
+                    task.ResetDay = DateTime.Today.Date + weekly;
+                    break;
+                case "Monthly":
+                    TimeSpan monthly = new TimeSpan(19, 0, 0, 0);
+                    task.ResetDay = DateTime.Today.Date + monthly;
+                    break;
+                default:
+                    task.ResetDay = DateTime.Today.Date;
+                    break;
+            }
             _repo.ToDoTask.EditTask(task);
             await _repo.Save();
             return RedirectToAction("Index", "PetOwners");
@@ -83,6 +99,8 @@ namespace PetManager.Controllers
         {
             if (ModelState.IsValid)
             {
+                TimeSpan defaultTime = new TimeSpan(1, 0, 0, 0);
+                toDoTask.Task.ResetDay = DateTime.Today.Date - defaultTime;
                 _repo.ToDoTask.CreateTask(toDoTask.Task);
                 await _repo.Save();
                 return RedirectToAction("Index", "PetOwners");

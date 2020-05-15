@@ -171,7 +171,7 @@ namespace PetManager.Controllers
             List<ToDoTask> filteredList = new List<ToDoTask>();
             foreach (ToDoTask task in allToDoTasks)
             {
-                if (task.ResetDay != DateTime.Today.Day)
+                if (task.ResetDay < DateTime.Today.Date)
                 {
                     filteredList.Add(task);
                 }

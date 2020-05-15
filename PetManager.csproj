@@ -21,6 +21,10 @@
     <Compile Remove="Data\Migrations\20200513205921_AddedContactsJxnTable.Designer.cs" />
     <Compile Remove="Data\Migrations\20200513210504_AddedContactsJxnTable.cs" />
     <Compile Remove="Data\Migrations\20200513210504_AddedContactsJxnTable.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200515151751_ChangedResetDayPropToDateTime.cs" />
+    <Compile Remove="Data\Migrations\20200515151751_ChangedResetDayPropToDateTime.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200515152317_ChangedResetDayToDateTime.cs" />
+    <Compile Remove="Data\Migrations\20200515152317_ChangedResetDayToDateTime.Designer.cs" />
   </ItemGroup>
 
 

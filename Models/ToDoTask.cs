@@ -12,7 +12,7 @@ namespace PetManager.Models
         [Key]
         public int TaskId { get; set; }
         public string TaskName { get; set; }
-        public int? ResetDay { get; set; }
+        public DateTime? ResetDay { get; set; }
         public string SpecialInstructions { get; set; }
 
         [ForeignKey("Pet")]
