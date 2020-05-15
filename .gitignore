@@ -354,3 +354,6 @@ MigrationBackup/
 
 #API key
 /API Key.cs
+
+#CSPROJ KEEPS BREAKING OUR PROJECT
+PetManager.csproj
