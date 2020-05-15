@@ -59,7 +59,7 @@ namespace PetManager.Controllers
             {
                 Task = new ToDoTask(),
                 CurrentPets = await FindOwnersPets(petIds),
-                AllFrequencies = 
+                AllFrequencies = await _repo.Frequency.GetFrequencies()
             };
             return View(task);
         }
@@ -100,9 +100,15 @@ namespace PetManager.Controllers
             //Find all pets so user can choose the pet that this task targets
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var ownerId = await _repo.PetOwner.FindOwnerId(userId);
+
+            //Get all pets and places it in viewbag
             List<int> petIds = await _repo.PetOwnership.FindAllPets(ownerId);
             List<Pet> pets = await GetPetsFromIds(petIds);
             ViewBag.Pets = pets;
+
+            //Get all frequencies and places them in viewbag
+            List<Frequency> frequencies = await _repo.Frequency.GetFrequencies();
+            ViewBag.Frequencies = frequencies;
 
             var toDoTask = await _repo.ToDoTask.FindTask(id);
             if (toDoTask == null)

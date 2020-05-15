@@ -12,5 +12,12 @@ namespace PetManager.Data
         public FrequencyRepository(ApplicationDbContext applicationDbContext) : base(applicationDbContext)
         {
         }
+
+        public async Task<List<Frequency>> GetFrequencies()
+        {
+            var results = await FindAll();
+            List<Frequency> frequencies = results.ToList();
+            return frequencies;
+        }
     }
 }

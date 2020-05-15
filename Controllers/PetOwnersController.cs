@@ -44,7 +44,6 @@ namespace PetManager.Controllers
             //Find all of the owner's pets and set prop on View Model
             var petIds = await _repo.PetOwnership.FindAllPets(owner.PetOwnerId);
             tasksAndPets.CurrentUsersPets = await FindOwnersPets(petIds);
-            tasksAndPets.CurrentUsersPets = await SetPetsAnimalTypes(tasksAndPets.CurrentUsersPets);
 
             //Find all tasks and set prop on View Model
             tasksAndPets.CurrentUsersTasks = await FindOwnersTasks(tasksAndPets.CurrentUsersPets);
@@ -84,7 +83,6 @@ namespace PetManager.Controllers
             //Find all of the owner's pets and set prop on View Model
             var petIds = await _repo.PetOwnership.FindAllPets(contact.PetOwnerId);
             tasksAndPets.CurrentUsersPets = await FindOwnersPets(petIds);
-            tasksAndPets.CurrentUsersPets = await SetPetsAnimalTypes(tasksAndPets.CurrentUsersPets);
 
             //Find all tasks and set prop on View Model
             tasksAndPets.CurrentUsersTasks = await FindOwnersTasks(tasksAndPets.CurrentUsersPets);
@@ -190,15 +188,6 @@ namespace PetManager.Controllers
                 ownersPets.Add(results.Include(p => p.AnimalType).FirstOrDefault());
             }
             return ownersPets;
-        }
-
-        public async Task<List<Pet>> SetPetsAnimalTypes(List<Pet> pets)
-        {
-            foreach (Pet pet in pets)
-            {
-                pet.AnimalType = await _repo.AnimalType.GetAnimalTypeById(pet.AnimalTypeId);
-            }
-            return pets;
         }
 
         // GET: PetOwners/Details/5

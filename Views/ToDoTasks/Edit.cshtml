@@ -30,6 +30,11 @@
                 <span asp-validation-for="PetId" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="FrequencyId" class="control-label">Frequency</label>
+                <select asp-for="FrequencyId" class="form-control" asp-items="@(new SelectList(ViewBag.Frequencies, "FrequencyId", "Interval"))"></select>
+                <span asp-validation-for="FrequencyId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
