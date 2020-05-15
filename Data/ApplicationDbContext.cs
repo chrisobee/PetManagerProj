@@ -22,6 +22,7 @@ namespace PetManager.Data
         public DbSet<AnimalType> AnimalTypes { get; set; }
         public DbSet<ToDoTask> Tasks { get; set; }
         public DbSet<Frequency> Frequencies { get; set; }
+        public DbSet<Recommendation> Recommendations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

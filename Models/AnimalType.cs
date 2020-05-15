@@ -15,6 +15,9 @@ namespace PetManager.Models
         [NotMapped]
         public Recommendation[] recommendationsForAllTypes { get; set; }
 
+        [ForeignKey("Recommendation")]
+        public int? RecommendationId { get; set; }
+        public Recommendation Recommendation { get; set; }
         public AnimalType()
         {
             recommendationsForAllTypes = new Recommendation[]
