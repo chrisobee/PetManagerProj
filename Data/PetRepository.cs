@@ -18,7 +18,7 @@ namespace PetManager.Data
         public async Task<Pet> GetPet(int? id)
         {
             var pet = await FindByCondition(p => p.PetId.Equals(id));
-            var SinglePet = pet.Include(p => p.AnimalType).ThenInclude(p => p.Recommendation).SingleOrDefault();
+            var SinglePet = pet.Include(p => p.AnimalType).Include(p => p.Recommendation).SingleOrDefault();
             return SinglePet;
         }
         public void EditPet(Pet pet) => Update(pet);

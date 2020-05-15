@@ -16,5 +16,8 @@ namespace PetManager.Models
         [ForeignKey("AnimalType")]
         public int AnimalTypeId { get; set; }
         public AnimalType AnimalType { get; set; }
+        [ForeignKey("Recommendation")]
+        public int? RecommendationId { get; set; }
+        public Recommendation Recommendation { get; set; }
     }
 }

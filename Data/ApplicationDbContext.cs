@@ -43,6 +43,17 @@ namespace PetManager.Data
                     new Frequency { FrequencyId = 2, Interval = "Weekly" },
                     new Frequency { FrequencyId = 3, Interval = "Monthly" }
                     );
+            builder.Entity<Recommendation>()
+                .HasData(
+                    new Recommendation { RecommendationId = 1, TaskName = "Go on Walk", Interval = "Weekly" },
+                    new Recommendation { RecommendationId = 2, TaskName = "Give Bath", Interval = "Weekly" },
+                    new Recommendation { RecommendationId = 3, TaskName = "Brush Cat", Interval = "Weekly" },
+                    new Recommendation { RecommendationId = 4, TaskName = "Clean Litter Box", Interval = "Daily" },
+                    new Recommendation { RecommendationId = 5, TaskName = "Clean Tank/Cage", Interval = "Monthly" },
+                    new Recommendation { RecommendationId = 6, TaskName = "Clean Aquarium", Interval = "Weekly" },
+                    new Recommendation { RecommendationId = 7, TaskName = "Clean Cage", Interval = "Weekly" },
+                    new Recommendation { RecommendationId = 8, TaskName = "Replace Horseshoes", Interval = "Monthly"}
+                    );
 
             builder.Entity<IdentityRole>()
                 .HasData(

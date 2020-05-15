@@ -17,6 +17,7 @@ namespace PetManager
         private IAnimalTypeRepository _animalType;
         private IFrequencyRepository _frequency;
         private IContactsJxnRepository _contacts;
+        private IRecommendationRepository _recommendation;
         public IPetRepository Pet
         {
             get
@@ -92,6 +93,17 @@ namespace PetManager
                     _frequency = new FrequencyRepository(_context);
                 }
                 return _frequency;
+            }
+        }
+        public IRecommendationRepository Recommendation
+        {
+            get
+            {
+                if(_recommendation == null)
+                {
+                    _recommendation = new RecommendationRepository(_context);
+                }
+                return _recommendation;
             }
         }
         public RepositoryWrapper(ApplicationDbContext context)
