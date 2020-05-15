@@ -9,5 +9,6 @@ namespace PetManager.Contracts
     public interface IFrequencyRepository : IRepositoryBase<Frequency>
     {
         Task<List<Frequency>> GetFrequencies();
+        Task<int> GetFrequencyByIntervalName(string interval);
     }
 }

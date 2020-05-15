@@ -7,17 +7,14 @@ using System.Threading.Tasks;
 
 namespace PetManager.Models
 {
-    public class Pet
+    public class Recommendation
     {
         [Key]
-        public int PetId { get; set; }
-        public string Name { get; set; }
-        public int Age { get; set; }
+        public int RecommendationId { get; set; }
+        public string TaskName { get; set; }
+        public string Interval { get; set; }
         [ForeignKey("AnimalType")]
-        public int AnimalTypeId { get; set; }
+        public int? AnimalTypeId { get; set; }
         public AnimalType AnimalType { get; set; }
-        [NotMapped]
-        public List<Recommendation> Recommendations { get; set; }
-        public string PhotoPath { get; set; }
     }
 }

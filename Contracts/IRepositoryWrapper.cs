@@ -14,6 +14,7 @@ namespace PetManager.Contracts
         IAnimalTypeRepository AnimalType { get; }
         IFrequencyRepository Frequency { get; }
         IContactsJxnRepository ContactsJxn { get; }
+        IRecommendationRepository Recommendation { get; }
         Task Save();
     }
 }

@@ -48,6 +48,9 @@ namespace PetManager.Controllers
             var petIds = await _repo.PetOwnership.FindAllPets(owner.PetOwnerId);
             tasksAndPets.CurrentUsersPets = await FindOwnersPets(petIds);
 
+            //Set recommendations for each pet
+            await SetPetsRecommendations(tasksAndPets.CurrentUsersPets, tasksAndPets.RecommendationsWithoutType);
+
             //Find all tasks and set prop on View Model
             tasksAndPets.CurrentUsersTasks = await FindOwnersTasks(tasksAndPets.CurrentUsersPets);
             tasksAndPets.CurrentUsersTasks = FilterTasks(tasksAndPets.CurrentUsersTasks);
@@ -71,6 +74,16 @@ namespace PetManager.Controllers
 
             ViewBag.googleAPIKey = API_Key.googleAPIKey;
             return View(tasksAndPets);
+        }
+
+        public async Task SetPetsRecommendations(List<Pet> pets, List<Recommendation> defaultRecommendations)
+        {
+            foreach(Pet pet in pets)
+            {
+                //Temp list to make sure values in list are reset for each iteration
+                var results = await _repo.Recommendation.GetRecommendation(pet.AnimalTypeId);
+                pet.Recommendations = defaultRecommendations.Concat(results).ToList();
+            }
         }
 
         public async Task<IActionResult> IndexForContact(int contactId)
