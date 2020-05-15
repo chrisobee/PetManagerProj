@@ -15,6 +15,18 @@ namespace PetManager.ViewModels
         public List<PetOwner> Contacts { get; set; }
         public NearbyPlace NearbyVets { get; set; }
         public NearbyPlace NearbyPetStores { get; set; }
-        
+        public List<Recommendation> RecommendationsWithoutType { get; set; }
+
+        public TasksAndPetsVM()
+        {
+            RecommendationsWithoutType = new List<Recommendation>()
+            {
+                new Recommendation {TaskName = "Feed AM", Interval = "Daily"},
+                new Recommendation {TaskName = "Feed PM", Interval = "Daily"},
+                new Recommendation {TaskName = "Give Medication AM", Interval = "Daily"},
+                new Recommendation {TaskName = "Give Medication PM", Interval = "Daily"}
+            };
+        }
+
     }
 }

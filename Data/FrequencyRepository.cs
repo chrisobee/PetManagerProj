@@ -19,5 +19,12 @@ namespace PetManager.Data
             List<Frequency> frequencies = results.ToList();
             return frequencies;
         }
+
+        public async Task<int> GetFrequencyByIntervalName(string interval)
+        {
+            var result = await FindByCondition(f => f.Interval == interval);
+            var frequency = result.Select(f => f.FrequencyId).FirstOrDefault();
+            return frequency;
+        }
     }
 }

@@ -12,5 +12,11 @@ namespace PetManager.Data
         public RecommendationRepository(ApplicationDbContext applicationDbContext) : base(applicationDbContext)
         {
         }
+        public async Task<List<Recommendation>> GetRecommendation(int animalTypeId)
+        {
+            var results = await FindByCondition(r => r.AnimalTypeId == animalTypeId);
+            var recommendations = results.ToList();
+            return recommendations;
+        }
     }
 }

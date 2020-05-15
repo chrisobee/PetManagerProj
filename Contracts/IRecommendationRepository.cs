@@ -8,5 +8,6 @@ namespace PetManager.Contracts
 {
     public interface IRecommendationRepository: IRepositoryBase<Recommendation>
     {
+        Task<List<Recommendation>> GetRecommendation(int animalTypeId);
     }
 }

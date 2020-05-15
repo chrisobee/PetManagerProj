@@ -80,6 +80,23 @@ namespace PetManager.Controllers
             return View(task);
         }
 
+        public async Task<IActionResult> CreateBasedOnRecommendation(string taskName, int petId, string interval)
+        {
+            TimeSpan defaultTimeSpan = new TimeSpan(1, 0, 0, 0);
+            ToDoTask taskToAdd = new ToDoTask()
+            {
+                TaskName = taskName,
+                PetId = petId,
+                ResetDay = DateTime.Today.Date - defaultTimeSpan,
+                FrequencyId = await _repo.Frequency.GetFrequencyByIntervalName(interval)
+            };
+
+            _repo.ToDoTask.CreateTask(taskToAdd);
+            await _repo.Save();
+
+            return RedirectToAction("Index", "PetOwners");
+        }
+
         public async Task<List<Pet>> FindOwnersPets(List<int> petIds)
         {
             List<Pet> ownersPets = new List<Pet>();
