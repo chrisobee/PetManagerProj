@@ -16,5 +16,6 @@ namespace PetManager.Models
         [ForeignKey("AnimalType")]
         public int AnimalTypeId { get; set; }
         public AnimalType AnimalType { get; set; }
+        public string PhotoPath { get; set; }
     }
 }

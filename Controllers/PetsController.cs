@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
@@ -17,10 +19,12 @@ namespace PetManager.Controllers
     public class PetsController : Controller
     {
         private readonly IRepositoryWrapper _repo;
+        private readonly IWebHostEnvironment _hostingEnvironment;
 
-        public PetsController(IRepositoryWrapper repo)
+        public PetsController(IRepositoryWrapper repo, IWebHostEnvironment hostingEnvironment)
         {
             _repo = repo;
+            _hostingEnvironment = hostingEnvironment;
         }
 
        
@@ -95,19 +99,28 @@ namespace PetManager.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Pet pet)
+        public async Task<IActionResult> Create(PetsAndAnimalTypeVM petVM)
         {
             if (ModelState.IsValid)
             {
+                string uniqueFileName = null;
+                if(petVM.Photo != null)
+                {
+                    string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "images");
+                    uniqueFileName = Guid.NewGuid().ToString() + "_" + petVM.Photo.FileName;
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    petVM.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
+                }
                 //Add pet to pet table
-                _repo.Pet.CreatePet(pet);                
+                petVM.Pet.PhotoPath = uniqueFileName;
+                _repo.Pet.CreatePet(petVM.Pet);                
                 await _repo.Save();
-                await AddPetToJxnTable(pet);
+                await AddPetToJxnTable(petVM.Pet);
                 await _repo.Save();
                 return RedirectToAction("Index", "PetOwners");
             }
             
-            return View(pet);
+            return View(petVM.Pet);
         }
 
         public async Task AddPetToJxnTable(Pet pet)

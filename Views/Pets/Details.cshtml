@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Details";
+    var photoPath = "~/Images/" + (Model.Pet.PhotoPath ?? "noimage.jpg");
 }
 
 <h1>Details</h1>
@@ -30,6 +31,9 @@
             </div>
             <div>
                 <th>@Html.DisplayFor(model => model.AnimalTypes[0].Name)</th>
+            </div>
+            <div>
+                <img src="@photoPath" asp-append-version="true" style="width:100%"/>
             </div>
         </div>
         <div class="col-md-6">
