@@ -21,6 +21,7 @@ namespace PetManager.Data
         public DbSet<ContactsJxn> Contacts { get; set; }
         public DbSet<AnimalType> AnimalTypes { get; set; }
         public DbSet<ToDoTask> Tasks { get; set; }
+        public DbSet<Frequency> Frequencies { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -34,7 +35,13 @@ namespace PetManager.Data
                     new AnimalType { AnimalTypeId = 4, Name = "Fish" },
                     new AnimalType { AnimalTypeId = 5, Name = "Bird" },
                     new AnimalType { AnimalTypeId = 6, Name = "Equine" }
-                    ); ;
+                    );
+            builder.Entity<Frequency>()
+                .HasData(
+                    new Frequency { FrequencyId = 1, Interval = "Daily" },
+                    new Frequency { FrequencyId = 2, Interval = "Weekly" },
+                    new Frequency { FrequencyId = 3, Interval = "Monthly" }
+                    );
 
             builder.Entity<IdentityRole>()
                 .HasData(

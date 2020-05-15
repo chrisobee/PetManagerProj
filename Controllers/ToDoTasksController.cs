@@ -58,7 +58,8 @@ namespace PetManager.Controllers
             TaskWithAllCurrentPets task = new TaskWithAllCurrentPets()
             {
                 Task = new ToDoTask(),
-                CurrentPets = await FindOwnersPets(petIds)
+                CurrentPets = await FindOwnersPets(petIds),
+                AllFrequencies = 
             };
             return View(task);
         }

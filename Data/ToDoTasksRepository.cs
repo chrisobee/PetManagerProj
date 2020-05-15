@@ -23,7 +23,7 @@ namespace PetManager.Data
         public async Task<ToDoTask> FindTask(int? taskId) 
         {
             var tasks = await FindByCondition(t => t.TaskId == taskId);
-            var singleTask = tasks.Include(t => t.Pet).SingleOrDefault();
+            var singleTask = tasks.Include(t => t.Frequency).Include(t => t.Pet).SingleOrDefault();
             return singleTask;
         }
 

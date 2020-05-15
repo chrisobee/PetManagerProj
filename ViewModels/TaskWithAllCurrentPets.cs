@@ -11,5 +11,7 @@ namespace PetManager.ViewModels
         public ToDoTask Task { get; set; }
 
         public List<Pet> CurrentPets { get; set; }
+
+        public List<Frequency> AllFrequencies { get; set; }
     }
 }

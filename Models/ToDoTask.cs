@@ -19,6 +19,10 @@ namespace PetManager.Models
         public int PetId { get; set; }
         public Pet Pet { get; set; }
 
+        [ForeignKey("Frequency")]
+        public int FrequencyId { get; set; }
+        public Frequency Frequency { get; set; }
+
 
     }
 }
