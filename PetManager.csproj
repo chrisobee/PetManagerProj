@@ -28,6 +28,10 @@
     <Compile Remove="Data\Migrations\20200515191723_contacts_added.cs" />
     <Compile Remove="Data\Migrations\20200515191723_contacts_added.Designer.cs" />
 
+    <Compile Remove="Data\Migrations\20200515165441_AddedRecommendationsTable.cs" />
+    <Compile Remove="Data\Migrations\20200515165441_AddedRecommendationsTable.Designer.cs" />
+
+
   </ItemGroup>
 
 

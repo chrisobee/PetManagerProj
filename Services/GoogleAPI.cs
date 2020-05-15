@@ -40,7 +40,7 @@ namespace PetManager.Services
             HttpClient client = new HttpClient();
             HttpResponseMessage response = await client.GetAsync($"https://maps.googleapis.com/maps/api/" +
                 $"place/nearbysearch/json?location={petOwner.Lat},{petOwner.Lng}" +
-                $"&radius=5000&type=pet_store&name&key={API_Key.googleAPIKey}");
+                $"&radius=7500&type=pet_store&name&key={API_Key.googleAPIKey}");
             
             if (response.IsSuccessStatusCode)
             {
@@ -55,7 +55,7 @@ namespace PetManager.Services
             HttpClient client = new HttpClient();
             HttpResponseMessage response = await client.GetAsync($"https://maps.googleapis.com/maps/api/" +
                 $"place/nearbysearch/json?location={petOwner.Lat},{petOwner.Lng}" +
-                $"&radius=5000&type=veterinary_care&name&key={API_Key.googleAPIKey}");
+                $"&radius=7500&type=veterinary_care&name&key={API_Key.googleAPIKey}");
 
             if (response.IsSuccessStatusCode)
             {

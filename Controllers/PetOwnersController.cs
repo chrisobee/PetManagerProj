@@ -137,21 +137,21 @@ namespace PetManager.Controllers
             }
             else
             {
-                return RedirectToAction("ConfirmContact", "PetOwners", person);
+                return RedirectToAction("ContactDetails", "PetOwners", new { id = person.PetOwnerId});
             }
         }
 
         //GET: PetOwners/ConfirmContact
-        [HttpGet]
-        public IActionResult ConfirmContact(PetOwner owner)
+        public async Task<IActionResult> ContactDetails(int id)
         {
+            var owner = await _repo.PetOwner.FindOwnerWithId(id);
             return View(owner);
         }
 
         //POST: PetOwners/ConfirmContact
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ConfirmContact(int? contactId)
+        public async Task<IActionResult> ContactDetails(int? contactId)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var ownerId = await _repo.PetOwner.FindOwnerId(userId);

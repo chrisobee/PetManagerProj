@@ -14,7 +14,8 @@
             <thead>
                 <tr>
                     <th>Pet Name</th>
-                    <th>Animal Type</th>                    
+                    <th>Animal Type</th> 
+                    <th>Recommended Tasks</th>
                 </tr>
             </thead>
             @foreach (Pet pet in Model.CurrentUsersPets)
@@ -85,15 +86,15 @@
         </table>
     </div>
 </div>
-    <div>        
-        <div style="width:100%; padding-top:10px" class="row">
-            <div class="col-md-4" style="border-style: double; border-color:grey; border-width:thick;">
+    <div class="row">        
+        <div style="width:100%; padding-top:10px" class="col-md-6">
+            <div style="border-style: double; border-color:grey; border-width:thick;">
                 <h3>Nearby Pet Stores</h3>
                 <div id="petMap" style="height:400px; width:100%"></div>
             </div>            
         </div>
-        <div style="width:100%; padding-top:10px" class="row">
-            <div class="col-md-4" style="border-style: double; border-color:grey; border-width:thick;">
+        <div style="width:100%; padding-top:10px" class="col-md-6">
+            <div style="border-style: double; border-color:grey; border-width:thick;">
                 <h3>Nearby Vets</h3>
                 <div id="vetMap" style="height:400px; width:100%"></div>
             </div>
