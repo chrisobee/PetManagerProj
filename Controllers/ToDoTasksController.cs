@@ -224,7 +224,7 @@ namespace PetManager.Controllers
             var toDoTask = await _repo.ToDoTask.FindTask(id);
             _repo.ToDoTask.DeleteTask(toDoTask);
             await _repo.Save();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("index", "PetOwners");
         }
 
         private bool ToDoTaskExists(int id)
