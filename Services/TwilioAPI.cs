@@ -23,7 +23,7 @@ namespace PetManager.Services
                 string toDoListText = null;
                 foreach (ToDoTask task in toDoTasks)
                 {
-                    toDoListText += $"\n -{task.TaskName}";
+                    toDoListText += $"\n -{task.Pet.Name}: {task.TaskName}";
                 }
                 var message = MessageResource.Create(
                     from: new Twilio.Types.PhoneNumber($"{API_Key.twilioPhoneNum}"),

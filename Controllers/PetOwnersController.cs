@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -19,11 +20,13 @@ namespace PetManager.Controllers
         private readonly IRepositoryWrapper _repo;
         private readonly IGoogleAPIs _googleAPI;
         private readonly ITwilioAPIs _twilioAPI;
-        public PetOwnersController(IRepositoryWrapper repo, IGoogleAPIs googleAPI, ITwilioAPIs twilioAPI)
+        private readonly IWebHostEnvironment _hostingEnvironment;
+        public PetOwnersController(IRepositoryWrapper repo, IGoogleAPIs googleAPI, ITwilioAPIs twilioAPI, IWebHostEnvironment hostingEnvironment)
         {
             _repo = repo;
             _googleAPI = googleAPI;
             _twilioAPI = twilioAPI;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         // GET: PetOwners

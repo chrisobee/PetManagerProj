@@ -16,8 +16,8 @@ namespace PetManager.Models
         [ForeignKey("AnimalType")]
         public int AnimalTypeId { get; set; }
         public AnimalType AnimalType { get; set; }
-
         [NotMapped]
         public List<Recommendation> Recommendations { get; set; }
+        public string PhotoPath { get; set; }
     }
 }
