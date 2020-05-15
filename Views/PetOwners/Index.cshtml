@@ -19,12 +19,7 @@
             </thead>
             @foreach (Pet pet in Model.CurrentUsersPets)
             {
-<<<<<<< HEAD
-        <tr>
-            <td><a asp-controller="Pets" asp-action="Details" asp-route-id="@pet.PetId">@pet.Name</a></td>
-            <td>@pet.AnimalType.Name</td>            
-        </tr>
-=======
+
                 <tr>
                     <td><a asp-controller="Pets" asp-action="Details" asp-route-id="@pet.PetId">@pet.Name</a></td>
                     <td>@pet.AnimalType.Name</td>
@@ -50,7 +45,6 @@
                         </div>
                     </td>
                 </tr>
->>>>>>> 26ad35801a74fbcb5efe6b790b4b8eb31c1f0558
             }
             <tr><td><a asp-controller="Pets" asp-action="Create">Add New Pet</a></td></tr>
         </table>
