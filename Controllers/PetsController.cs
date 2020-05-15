@@ -110,6 +110,7 @@ namespace PetManager.Controllers
                     uniqueFileName = Guid.NewGuid().ToString() + "_" + petVM.Photo.FileName;
                     string filePath = Path.Combine(uploadsFolder, uniqueFileName);
                     petVM.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
+
                 }
                 //Add pet to pet table
                 petVM.Pet.PhotoPath = uniqueFileName;
@@ -135,15 +136,20 @@ namespace PetManager.Controllers
             if (id == null)
             {
                 return NotFound();
-            }
-
+            }            
             var pet = await _repo.Pet.GetPet(id);
             if (pet == null)
             {
                 return NotFound();
             }
-            
-            return View(pet);
+
+            PetsAndAnimalTypeVM petVM = new PetsAndAnimalTypeVM()
+            {
+                Pet = pet,
+                AnimalTypes = await GetAnimalTypes(),
+                 
+            };
+            return View(petVM);
         }
 
         // POST: Pets/Edit/5
@@ -151,9 +157,9 @@ namespace PetManager.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Pet pet)
+        public async Task<IActionResult> Edit(int id, PetsAndAnimalTypeVM petVM)
         {
-            if (id != pet.PetId)
+            if (id != petVM.Pet.PetId)
             {
                 return NotFound();
             }
@@ -162,13 +168,23 @@ namespace PetManager.Controllers
             {
                 try
                 {
-                    _repo.Pet.EditPet(pet);
+                    string uniqueFileName = null;
+                    if (petVM.Photo != null)
+                    {
+                        string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "images");
+                        uniqueFileName = Guid.NewGuid().ToString() + "_" + petVM.Photo.FileName;
+                        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                        petVM.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
+                        petVM.Pet.PhotoPath = uniqueFileName;
+                    }
+                    
+                    _repo.Pet.EditPet(petVM.Pet);
                     await _repo.Save();                   
-                    return RedirectToAction("Details", new { id = pet.PetId });
+                    return RedirectToAction("Details", new { id = petVM.Pet.PetId });
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PetExists(pet.PetId))
+                    if (!PetExists(petVM.Pet.PetId))
                     {
                         return NotFound();
                     }
@@ -179,7 +195,7 @@ namespace PetManager.Controllers
                 }
                 
             }            
-            return View(pet);
+            return View(petVM);
         }
 
         // GET: Pets/Delete/5
