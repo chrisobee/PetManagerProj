@@ -53,7 +53,6 @@
                 <tr>
                     <th>Pet Name</th>
                     <th>Animal Type</th>
-                    <th>Recommended Tasks</th>
                 </tr>
             </thead>
             <tbody>
@@ -62,38 +61,8 @@
                     <tr>
                         <td><a asp-controller="Pets" asp-action="Details" asp-route-id="@pet.PetId">@pet.Name</a></td>
                         <td>@pet.AnimalType.Name</td>
-                        <td>
-                            <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-info">Recommended Tasks</button>
-                                <div class="btn-group" role="group">
-                                    <button id="btnGroupDrop3" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop3" style="">
-                                        @foreach (Recommendation recommendation in pet.Recommendations)
-                                        {
-                                            <a class="dropdown-item"
-                                               asp-controller="ToDoTasks"
-                                               asp-action="CreateBasedOnRecommendation"
-                                               asp-route-taskName="@recommendation.TaskName"
-                                               asp-route-petId="@pet.PetId"
-                                               asp-route-interval="@recommendation.Interval">
-                                                @recommendation.TaskName
-                                            </a>
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
                     </tr>
                 }
-                <tr>
-                    <td>
-                        <a class="btn btn-outline-danger" asp-controller="Pets" asp-action="Create">Add Pet</a>
-                    </td>
-                    <td style="padding:8px 0"></td>
-                    <td>
-                        <a class="btn btn-outline-danger" asp-controller="ToDoTasks" asp-action="Create">Add Custom Task</a>
-                    </td>
-                </tr>
             </tbody>
         </table>
 
@@ -110,7 +79,7 @@
             @foreach (ToDoTask task in Model.CurrentUsersTasks)
             {
                 <tr>
-                    <td><a asp-controller="ToDoTasks" asp-action="Details" asp-route-taskId="@task.TaskId">@task.TaskName</a></td>
+                    <td><a asp-controller="ToDoTasks" asp-action="ContactTaskDetails" asp-route-taskId="@task.TaskId">@task.TaskName</a></td>
                     <td>@task.Pet.Name</td>
                     <td><a class="btn btn-primary" asp-controller="ToDoTasks" asp-action="CheckOffTask" asp-route-id="@task.TaskId">Check Off Task</a></td>
                 </tr>

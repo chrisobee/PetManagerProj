@@ -60,7 +60,30 @@ namespace PetManager.Controllers
             }
             _repo.ToDoTask.EditTask(task);
             await _repo.Save();
-            return RedirectToAction("Index", "PetOwners");
+
+            //Check Redirect Location
+            if (await CheckRedirectLocation(id))
+            {
+                return RedirectToAction("Index", "PetOwners");
+            }
+            else
+            {
+                return RedirectToAction("IndexForContact", "PetOwners");
+            }
+        }
+
+        public async Task<bool> CheckRedirectLocation(int id)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentUserId = await _repo.PetOwner.FindOwnerId(userId);
+            if(currentUserId == id)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         // GET: ToDoTasks/Create
