@@ -29,5 +29,12 @@ namespace PetManager.Data
             var ownersContacts = results.Select(c => c.ContactId).ToList();
             return ownersContacts;
         }
+
+        public async Task<List<PetOwner>> FindAllContacts(int ownerId)
+        {
+            var results = await FindByCondition(c => c.PetOwnerId == ownerId);
+            var contacts = results.Select(c => c.Contact).ToList();
+            return contacts;
+        }
     }
 }

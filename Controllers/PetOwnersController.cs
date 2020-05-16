@@ -92,6 +92,12 @@ namespace PetManager.Controllers
             TasksAndPetsVM tasksAndPets = new TasksAndPetsVM();
             ViewBag.contactId = contactId;
 
+            //Gets current user's contacts and passes it to view
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentUser = await _repo.PetOwner.FindOwnerId(userId);
+            var contacts = await _repo.ContactsJxn.
+            ViewBag.Contacts
+
             //Find owner and set property on View Model
             var contact = await _repo.PetOwner.FindOwnerWithId(contactId);
             tasksAndPets.PetOwner = contact;

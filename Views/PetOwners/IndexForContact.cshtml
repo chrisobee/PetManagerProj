@@ -4,39 +4,110 @@
     ViewBag.Title = "IndexForContact";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+    <style>
+        table {
+            border-collapse: separate;
+            border-spacing: 25px 0;
+        }
+
+        td {
+            padding: 10px 0
+        }
+
+        .col-md-5 {
+            height: 500px;
+        }
+
+        .col-md-2 {
+            height: 500px;
+        }
+    </style>
 
 <h1>@Model.PetOwner.FirstName's Index</h1>
 <hr />
+
 <div class="row">
-    <div style="border-color:pink; border-width:thick;" class="col-md-3">
+    <div style="border-style: double;
+        border-color: grey;
+        border-width: thick;
+        text-align: center;" class="col-md-2">
+        <table>
+            <thead>
+                <tr>Contacts:</tr>
+            </thead>
+            @foreach (PetOwner contact in Model.Contacts)
+            {
+                <tr>
+                    <td><a asp-action="IndexForContact" asp-route-contactId="@contact.PetOwnerId">@contact.FirstName  @contact.LastName</a></td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div style="border-style: double; border-color:grey; border-width:thick; padding-bottom:10px" class="col-md-5">
         <table>
             <thead>
                 <tr>
                     <th>Pet Name</th>
                     <th>Animal Type</th>
+                    <th>Recommended Tasks</th>
                 </tr>
             </thead>
-            @foreach (Pet pet in Model.CurrentUsersPets)
-            {
+            <tbody>
+                @foreach (Pet pet in Model.CurrentUsersPets)
+                {
+                    <tr>
+                        <td><a asp-controller="Pets" asp-action="Details" asp-route-id="@pet.PetId">@pet.Name</a></td>
+                        <td>@pet.AnimalType.Name</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-info">Recommended Tasks</button>
+                                <div class="btn-group" role="group">
+                                    <button id="btnGroupDrop3" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop3" style="">
+                                        @foreach (Recommendation recommendation in pet.Recommendations)
+                                        {
+                                            <a class="dropdown-item"
+                                               asp-controller="ToDoTasks"
+                                               asp-action="CreateBasedOnRecommendation"
+                                               asp-route-taskName="@recommendation.TaskName"
+                                               asp-route-petId="@pet.PetId"
+                                               asp-route-interval="@recommendation.Interval">
+                                                @recommendation.TaskName
+                                            </a>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
                 <tr>
-                    <td><a asp-controller="Pets" asp-action="ContactPetDetails" asp-route-id="@pet.PetId" asp-route-contactId="@ViewBag.contactId">@pet.Name</a></td>
-                    <td>@pet.AnimalType.Name</td>
+                    <td>
+                        <a class="btn btn-outline-danger" asp-controller="Pets" asp-action="Create">Add Pet</a>
+                    </td>
+                    <td style="padding:8px 0"></td>
+                    <td>
+                        <a class="btn btn-outline-danger" asp-controller="ToDoTasks" asp-action="Create">Add Custom Task</a>
+                    </td>
                 </tr>
-            }
+            </tbody>
         </table>
+
     </div>
-    <div class="col-md-9" style="background-color:grey;">
+    <div style="overflow-y:auto; border-style: double; border-color:grey; border-width:thick; text-align:center;" class="col-md-5">
         <table>
             <thead>
                 <tr>
                     <th>Task Name</th>
+                    <th>Pet</th>
                     <th>Task Completed</th>
                 </tr>
             </thead>
             @foreach (ToDoTask task in Model.CurrentUsersTasks)
             {
                 <tr>
-                    <td><a asp-controller="ToDoTasks" asp-action="ContactTaskDetails" asp-route-taskId="@task.TaskId" asp-route-contactId="@ViewBag.contactId">@task.TaskName</a></td>
+                    <td><a asp-controller="ToDoTasks" asp-action="Details" asp-route-taskId="@task.TaskId">@task.TaskName</a></td>
+                    <td>@task.Pet.Name</td>
                     <td><a class="btn btn-primary" asp-controller="ToDoTasks" asp-action="CheckOffTask" asp-route-id="@task.TaskId">Check Off Task</a></td>
                 </tr>
             }

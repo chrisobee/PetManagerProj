@@ -4,9 +4,8 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Edit @Model.Pet.Name's Info</h1>
 
-<h4>Pet</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -40,7 +39,7 @@
 </div>
 
 <div>
-    <a asp-action="Details" asp-route-id="@Model.Pet.PetId">Back to List</a>
+    <a class="btn btn-primary" asp-action="Details" asp-route-id="@Model.Pet.PetId">Back to Home</a>
 </div>
 
 @section Scripts {

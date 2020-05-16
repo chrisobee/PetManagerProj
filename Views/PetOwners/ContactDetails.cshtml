@@ -11,28 +11,37 @@
 <div>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.FirstName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.FirstName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.LastName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.LastName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PhoneNumber)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
+        @if (Model.PhoneNumber == null)
+        {
+            <dd class="col-sm-10">
+                No Phone Number Included
+            </dd>
+        }
+        else
+        {
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.PhoneNumber)
+            </dd>
+        }
     </dl>
     
     <form asp-action="ContactDetails" asp-route-contactId="@Model.PetOwnerId">
-        <input type="submit" value="ConfirmContact" class="btn btn-warning" /> |
-        <a asp-action="Search">Back to Search</a>
+        <input type="submit" value="ConfirmContact" class="btn btn-warning" />
+        <a class="btn btn-info" asp-action="Search">Back to Search</a>
     </form>
 </div>

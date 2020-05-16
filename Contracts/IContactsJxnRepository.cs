@@ -10,5 +10,6 @@ namespace PetManager.Contracts
     {
         void AddContact(int ownerId, int? contactId);
         Task<List<int?>> CheckForContacts(int ownerId);
+        Task<List<PetOwner>> FindAllContacts(int ownerId);
     }
 }

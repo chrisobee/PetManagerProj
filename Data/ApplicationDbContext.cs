@@ -45,14 +45,14 @@ namespace PetManager.Data
                     );
             builder.Entity<Recommendation>()
                 .HasData(
-                    new Recommendation { RecommendationId = 1, TaskName = "Go on Walk", Interval = "Weekly" },
-                    new Recommendation { RecommendationId = 2, TaskName = "Give Bath", Interval = "Weekly" },
-                    new Recommendation { RecommendationId = 3, TaskName = "Brush Cat", Interval = "Weekly" },
-                    new Recommendation { RecommendationId = 4, TaskName = "Clean Litter Box", Interval = "Daily" },
-                    new Recommendation { RecommendationId = 5, TaskName = "Clean Tank/Cage", Interval = "Monthly" },
-                    new Recommendation { RecommendationId = 6, TaskName = "Clean Aquarium", Interval = "Weekly" },
-                    new Recommendation { RecommendationId = 7, TaskName = "Clean Cage", Interval = "Weekly" },
-                    new Recommendation { RecommendationId = 8, TaskName = "Replace Horseshoes", Interval = "Monthly"}
+                    new Recommendation { RecommendationId = 1, TaskName = "Go on Walk", Interval = "Weekly", AnimalTypeId = 1 },
+                    new Recommendation { RecommendationId = 2, TaskName = "Give Bath", Interval = "Weekly", AnimalTypeId = 1 },
+                    new Recommendation { RecommendationId = 3, TaskName = "Brush Cat", Interval = "Weekly", AnimalTypeId = 2 },
+                    new Recommendation { RecommendationId = 4, TaskName = "Clean Litter Box", Interval = "Daily", AnimalTypeId = 2  },
+                    new Recommendation { RecommendationId = 5, TaskName = "Clean Tank/Cage", Interval = "Monthly", AnimalTypeId = 3 },
+                    new Recommendation { RecommendationId = 6, TaskName = "Clean Aquarium", Interval = "Weekly", AnimalTypeId = 4 },
+                    new Recommendation { RecommendationId = 7, TaskName = "Clean Cage", Interval = "Weekly", AnimalTypeId = 5 },
+                    new Recommendation { RecommendationId = 8, TaskName = "Replace Horseshoes", Interval = "Monthly", AnimalTypeId = 6}
                     );
 
             builder.Entity<IdentityRole>()
