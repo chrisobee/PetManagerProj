@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = "Details";
     var photoPath = "~/Images/" + (Model.Pet.PhotoPath ?? "noimage.jpg");
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+
 }
 
 <h1>@Model.Pet.Name's Info</h1>
@@ -50,7 +52,7 @@
                 <dl>To Do Tasks for @Model.Pet.Name</dl>
                 @foreach (ToDoTask task in Model.PetsTasks)
                 {
-                    <dd><a asp-action="Edit" asp-controller="ToDoTasks" asp-route-id="@task.TaskId">@task.TaskName</a></dd>
+                    <dd><a asp-action="Details" asp-controller="ToDoTasks" asp-route-taskId="@task.TaskId">@task.TaskName</a></dd>
                 }
             </div>
         </div>        

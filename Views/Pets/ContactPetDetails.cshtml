@@ -1,37 +1,64 @@
-﻿@model PetManager.Models.Pet
+﻿@model PetManager.ViewModels.PetsAndAnimalTypeVM
 
 @{
-    ViewData["Title"] = "ContactDetails";
     ViewBag.Title = "ContactDetails";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    var photoPath = "~/Images/" + (Model.Pet.PhotoPath ?? "noimage.jpg");
+
 }
 
-<h1>ContactDetails</h1>
+<h1>@Model.Pet.Name's Info</h1>
 
 <div>
-    <h4>Pet</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            Pet Name
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            Age
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Age)
-        </dd>
-        <dt class = "col-sm-2">
-            Animal Type
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AnimalType.Name)
-        </dd>
+        <div class="col-md-3">
+            <div>
+                @if (photoPath == "~/Images/noimage.jpg")
+                {
+                    <h4>No Image of @Model.Pet.Name  :(</h4>
+                }
+                else
+                {
+                    <img src="@photoPath" asp-append-version="true" style="width:100%" />
+                }
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div>
+                <th>@Html.DisplayNameFor(model => model.Pet.Name)</th>
+            </div>
+            <div>
+                <th>@Html.DisplayNameFor(model => model.Pet.Age)</th>
+            </div>
+            <div>
+                <th>Animal Type</th>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div>
+                <th>@Html.DisplayFor(model => model.Pet.Name)</th>
+            </div>
+            <div>
+                <th>@Html.DisplayFor(model => model.Pet.Age)</th>
+            </div>
+            <div>
+                <th>@Html.DisplayFor(model => model.Pet.AnimalType.Name)</th>
+            </div>
+
+        </div>
+        <div class="col-md-3">
+            <div>
+                <dl>To Do Tasks for @Model.Pet.Name</dl>
+                @foreach (ToDoTask task in Model.PetsTasks)
+                {
+                    <dd><a asp-action="ContactTaskDetails" asp-controller="ToDoTasks" asp-route-taskId="@task.TaskId" asp-route-contactId="@ViewBag.contactId">@task.TaskName</a></dd>
+                }
+            </div>
+        </div>
     </dl>
-</div>
-<div>
-    <a asp-controller="PetOwners" asp-action="IndexForContact" asp-route-contactId="@ViewBag.contactId">Back to List</a>
-</div>
+
+    <hr />
+    <div>
+        <a class="btn btn-primary" asp-action="IndexForContact" asp-controller="PetOwners" asp-route-contactId="@ViewBag.contactId">Back to Home</a>
+    </div>

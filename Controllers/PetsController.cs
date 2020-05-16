@@ -60,6 +60,8 @@ namespace PetManager.Controllers
         public async Task<IActionResult> ContactPetDetails(int? id, int contactId)
         {
             ViewBag.contactId = contactId;
+            PetsAndAnimalTypeVM petsAndAnimalTypeVM = new PetsAndAnimalTypeVM();
+
             if (id == null)
             {
                 return NotFound();
@@ -71,7 +73,10 @@ namespace PetManager.Controllers
             {
                 return NotFound();
             }
-            return View(pet);
+            petsAndAnimalTypeVM.Pet = pet;
+            var results = await _repo.ToDoTask.GetTasksByPet(pet.PetId);
+            petsAndAnimalTypeVM.PetsTasks = results.ToList();
+            return View(petsAndAnimalTypeVM);
         }
 
         // GET: Pets/Create

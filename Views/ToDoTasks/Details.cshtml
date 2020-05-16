@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
 
 <h1>Task Info</h1>
@@ -35,7 +36,7 @@
             Pet
         </dt>
         <dd class="col-sm-10">
-            @ViewBag.Pet
+            @ViewBag.Pet.Name
         </dd>
         <dt class="col-sm-2">
             Task Interval

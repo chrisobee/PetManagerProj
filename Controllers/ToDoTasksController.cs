@@ -27,7 +27,7 @@ namespace PetManager.Controllers
         {
             var task = await _repo.ToDoTask.FindTask(taskId);
             var pet = await _repo.Pet.GetPet(task.PetId);
-            ViewBag.Pet = pet.Name;
+            ViewBag.Pet = pet;
             return View(task);
         }
 
@@ -35,10 +35,11 @@ namespace PetManager.Controllers
         {
             var task = await _repo.ToDoTask.FindTask(taskId);
             ViewBag.contactId = contactId;
+            ViewBag.pet = task.Pet;
             return View(task);
         }
 
-        public async Task<IActionResult> CheckOffTask(int id)
+        public async Task<IActionResult> CheckOffTask(int id, int currentUserId)
         {
             var task = await _repo.ToDoTask.FindTask(id);
             switch (task.Frequency.Interval)
@@ -62,13 +63,13 @@ namespace PetManager.Controllers
             await _repo.Save();
 
             //Check Redirect Location
-            if (await CheckRedirectLocation(id))
+            if (await CheckRedirectLocation(currentUserId))
             {
                 return RedirectToAction("Index", "PetOwners");
             }
             else
             {
-                return RedirectToAction("IndexForContact", "PetOwners");
+                return RedirectToAction("IndexForContact", "PetOwners", new { contactId = currentUserId });
             }
         }
 

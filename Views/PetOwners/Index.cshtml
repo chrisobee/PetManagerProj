@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
     
 }
 <style>
@@ -105,7 +105,7 @@
                 <tr>
                     <td><a asp-controller="ToDoTasks" asp-action="Details" asp-route-taskId="@task.TaskId">@task.TaskName</a></td>
                     <td>@task.Pet.Name</td>
-                    <td><a class="btn btn-primary" asp-controller="ToDoTasks" asp-action="CheckOffTask" asp-route-id="@task.TaskId">Check Off Task</a></td>
+                    <td><a class="btn btn-primary" asp-controller="ToDoTasks" asp-action="CheckOffTask" asp-route-id="@task.TaskId" asp-route-currentUserId ="@Model.PetOwner.PetOwnerId">Check Off Task</a></td>
                 </tr>
             }
         </table>

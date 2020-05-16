@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "IndexForContact";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
     <style>
         table {
@@ -23,7 +23,7 @@
         }
     </style>
 
-<h1>@Model.PetOwner.FirstName's Index</h1>
+<h1>@Model.PetOwner.FirstName's Pets</h1>
 <hr />
 
 <div class="row">
@@ -59,7 +59,7 @@
                 @foreach (Pet pet in Model.CurrentUsersPets)
                 {
                     <tr>
-                        <td><a asp-controller="Pets" asp-action="Details" asp-route-id="@pet.PetId">@pet.Name</a></td>
+                        <td><a asp-controller="Pets" asp-action="ContactPetDetails" asp-route-id="@pet.PetId" asp-route-contactId="@Model.PetOwner.PetOwnerId">@pet.Name</a></td>
                         <td>@pet.AnimalType.Name</td>
                     </tr>
                 }
@@ -79,9 +79,9 @@
             @foreach (ToDoTask task in Model.CurrentUsersTasks)
             {
                 <tr>
-                    <td><a asp-controller="ToDoTasks" asp-action="ContactTaskDetails" asp-route-taskId="@task.TaskId">@task.TaskName</a></td>
+                    <td><a asp-controller="ToDoTasks" asp-action="ContactTaskDetails" asp-route-taskId="@task.TaskId" asp-route-contactId="@ViewBag.contactId">@task.TaskName</a></td>
                     <td>@task.Pet.Name</td>
-                    <td><a class="btn btn-primary" asp-controller="ToDoTasks" asp-action="CheckOffTask" asp-route-id="@task.TaskId">Check Off Task</a></td>
+                    <td><a class="btn btn-primary" asp-controller="ToDoTasks" asp-action="CheckOffTask" asp-route-id="@task.TaskId" asp-route-currentUserId="@Model.PetOwner.PetOwnerId">Check Off Task</a></td>
                 </tr>
             }
         </table>
